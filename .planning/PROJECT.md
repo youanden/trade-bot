@@ -1,0 +1,86 @@
+# Trade Bot — Simulation & Testing
+
+## What This Is
+
+A simulation and testing layer for an existing Cloudflare Workers trading bot platform. Adds seeders that populate all 8 bot types with realistic configurations, market data, and trade history, plus a backtest engine and paper trading mode to evaluate strategy performance across different market conditions. Results are reported via CLI.
+
+## Core Value
+
+Confidently evaluate and compare all 8 trading strategies against realistic market scenarios before risking real capital.
+
+## Requirements
+
+### Validated
+
+- ✓ 8 trading strategies implemented (cross-arb, copy-trader, deep-research, ladder-straddle, llm-assessor, logical-arb, market-maker, weather-arb) — existing
+- ✓ Unified ExchangeClient interface for Polymarket and Kalshi — existing
+- ✓ D1/Drizzle schema for markets, prices, bots, orders, trades, positions — existing
+- ✓ PortfolioRisk and Kelly criterion risk management — existing
+- ✓ React dashboard with TanStack Query — existing
+
+### Active
+
+- [ ] Seeder for all 8 bot types with valid configs, market data, and pre-populated trades/positions
+- [ ] Market data generator for bull, bear, and flat trend patterns
+- [ ] Market data generator for volatile and crash scenarios
+- [ ] Real market data capture and replay from Polymarket/Kalshi
+- [ ] Backtest engine that replays market data through strategies and measures performance
+- [ ] Paper trading mode that runs bots against real data with simulated balances
+- [ ] CLI performance report (PnL, Sharpe ratio, drawdown, win rate) per strategy per scenario
+- [ ] Strategy comparison across scenarios in CLI output
+- [ ] Unit tests for strategy logic with in-memory SQLite (Vitest)
+- [ ] Integration tests on Wrangler dev with D1 local
+
+### Out of Scope
+
+- Dashboard/UI for simulation results — CLI report is sufficient for now
+- Cross-platform arb spread generation — focusing on directional trends first, arb scenarios deferred
+- Modifying existing strategy logic — testing existing strategies as-is
+- Production deployment of simulation — dev/test only
+
+## Context
+
+- Existing codebase is a Cloudflare Workers monorepo with Hono API + React SPA
+- All strategies are stateless tick functions conforming to `StrategyTickFn = (bot: BaseBotDO, env: Env) => Promise<void>`
+- Each bot runs as a Durable Object with alarm-driven tick loop
+- Dual-platform: Polymarket (EVM/CLOB) and Kalshi (REST) behind unified `ExchangeClient` interface
+- Database: Cloudflare D1 (SQLite) via Drizzle ORM with tables for markets, prices, bot_instances, orders, trades, positions
+- Test infrastructure: Vitest available, no existing test suite for strategy simulation
+- The backtest engine needs to mock/replace `ExchangeClient` with a simulated exchange that feeds from generated or captured market data
+- Paper trading needs a similar mock but consuming live market feeds
+
+## Constraints
+
+- **Runtime**: Must work within Cloudflare Workers constraints (no Node.js-only APIs in production code)
+- **Testing Runtime**: Vitest + in-memory SQLite for unit tests, Wrangler dev for integration
+- **Data**: Market data generators must produce data compatible with existing `markets`, `prices`, and exchange response schemas
+- **Strategy Interface**: Simulation must exercise strategies through their existing `StrategyTickFn` interface without modification
+
+## Key Decisions
+
+| Decision | Rationale | Outcome |
+|----------|-----------|---------|
+| CLI report over dashboard | Faster iteration, less scope, can always add UI later | — Pending |
+| Mock ExchangeClient for backtest | Strategies already use interface; swap implementation for simulation | — Pending |
+| In-memory SQLite for unit tests | Matches D1 SQLite semantics without needing Wrangler | — Pending |
+| Defer arb spread scenarios | Directional trends cover most strategies; arb spreads add complexity | — Pending |
+
+## Evolution
+
+This document evolves at phase transitions and milestone boundaries.
+
+**After each phase transition** (via `/gsd:transition`):
+1. Requirements invalidated? → Move to Out of Scope with reason
+2. Requirements validated? → Move to Validated with phase reference
+3. New requirements emerged? → Add to Active
+4. Decisions to log? → Add to Key Decisions
+5. "What This Is" still accurate? → Update if drifted
+
+**After each milestone** (via `/gsd:complete-milestone`):
+1. Full review of all sections
+2. Core Value check — still the right priority?
+3. Audit Out of Scope — reasons still valid?
+4. Update Context with current state
+
+---
+*Last updated: 2026-03-21 after initialization*
