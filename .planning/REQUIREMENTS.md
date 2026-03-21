@@ -111,54 +111,54 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TEST-01 | TBD | Pending |
-| TEST-02 | TBD | Pending |
-| TEST-03 | TBD | Pending |
-| DATA-01 | TBD | Pending |
-| DATA-02 | TBD | Pending |
-| DATA-03 | TBD | Pending |
-| DATA-04 | TBD | Pending |
-| DATA-05 | TBD | Pending |
-| DATA-06 | TBD | Pending |
-| DATA-07 | TBD | Pending |
-| SEED-01 | TBD | Pending |
-| SEED-02 | TBD | Pending |
-| SEED-03 | TBD | Pending |
-| SEED-04 | TBD | Pending |
-| SEED-05 | TBD | Pending |
-| EXCH-01 | TBD | Pending |
-| EXCH-02 | TBD | Pending |
-| EXCH-03 | TBD | Pending |
-| EXCH-04 | TBD | Pending |
-| EXCH-05 | TBD | Pending |
-| EXCH-06 | TBD | Pending |
-| EXCH-07 | TBD | Pending |
-| BT-01 | TBD | Pending |
-| BT-02 | TBD | Pending |
-| BT-03 | TBD | Pending |
-| BT-04 | TBD | Pending |
-| BT-05 | TBD | Pending |
-| BT-06 | TBD | Pending |
-| BT-07 | TBD | Pending |
-| PAPER-01 | TBD | Pending |
-| PAPER-02 | TBD | Pending |
-| PAPER-03 | TBD | Pending |
-| RPT-01 | TBD | Pending |
-| RPT-02 | TBD | Pending |
-| RPT-03 | TBD | Pending |
-| RPT-04 | TBD | Pending |
-| RPT-05 | TBD | Pending |
-| RPT-06 | TBD | Pending |
-| RPT-07 | TBD | Pending |
-| RPT-08 | TBD | Pending |
-| RPT-09 | TBD | Pending |
-| RPT-10 | TBD | Pending |
+| TEST-01 | Phase 1 | Pending |
+| TEST-02 | Phase 1 | Pending |
+| TEST-03 | Phase 1 | Pending |
+| DATA-01 | Phase 2 | Pending |
+| DATA-02 | Phase 2 | Pending |
+| DATA-03 | Phase 2 | Pending |
+| DATA-04 | Phase 2 | Pending |
+| DATA-05 | Phase 2 | Pending |
+| DATA-06 | Phase 2 | Pending |
+| DATA-07 | Phase 2 | Pending |
+| SEED-01 | Phase 5 | Pending |
+| SEED-02 | Phase 5 | Pending |
+| SEED-03 | Phase 5 | Pending |
+| SEED-04 | Phase 5 | Pending |
+| SEED-05 | Phase 5 | Pending |
+| EXCH-01 | Phase 3 | Pending |
+| EXCH-02 | Phase 3 | Pending |
+| EXCH-03 | Phase 3 | Pending |
+| EXCH-04 | Phase 3 | Pending |
+| EXCH-05 | Phase 3 | Pending |
+| EXCH-06 | Phase 3 | Pending |
+| EXCH-07 | Phase 3 | Pending |
+| BT-01 | Phase 4 | Pending |
+| BT-02 | Phase 4 | Pending |
+| BT-03 | Phase 4 | Pending |
+| BT-04 | Phase 4 | Pending |
+| BT-05 | Phase 4 | Pending |
+| BT-06 | Phase 4 | Pending |
+| BT-07 | Phase 4 | Pending |
+| PAPER-01 | Phase 7 | Pending |
+| PAPER-02 | Phase 7 | Pending |
+| PAPER-03 | Phase 7 | Pending |
+| RPT-01 | Phase 6 | Pending |
+| RPT-02 | Phase 6 | Pending |
+| RPT-03 | Phase 6 | Pending |
+| RPT-04 | Phase 6 | Pending |
+| RPT-05 | Phase 6 | Pending |
+| RPT-06 | Phase 6 | Pending |
+| RPT-07 | Phase 6 | Pending |
+| RPT-08 | Phase 6 | Pending |
+| RPT-09 | Phase 6 | Pending |
+| RPT-10 | Phase 6 | Pending |
 
 **Coverage:**
 - v1 requirements: 38 total
-- Mapped to phases: 0
-- Unmapped: 38 ⚠️
+- Mapped to phases: 38
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-21*
-*Last updated: 2026-03-21 after initial definition*
+*Last updated: 2026-03-21 after roadmap creation*
