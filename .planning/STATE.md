@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 08-01-PLAN.md
-last_updated: "2026-03-22T18:13:40.381Z"
+stopped_at: Completed 08-02-PLAN.md
+last_updated: "2026-03-22T18:17:34.059Z"
 last_activity: 2026-03-22
 progress:
   total_phases: 9
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 11
-  completed_plans: 10
+  completed_plans: 11
 ---
 
 # Project State
@@ -57,6 +57,7 @@ Plan: 2 of 2
 | Phase 04 P02 | 5 | 2 tasks | 2 files |
 | Phase 04-backtest-engine P03 | 5 | 1 tasks | 1 files |
 | Phase 08 P01 | 2 | 2 tasks | 4 files |
+| Phase 08 P02 | 5 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -89,6 +90,8 @@ Recent decisions affecting current work:
 - [Phase 04-backtest-engine]: PortfolioRisk constructed with default clockFn in test — SimulatedDate override ensures correct simulated-time behavior
 - [Phase 08]: Extract HMAC signing to standalone buildHmacSignature function to enable isolated unit testing without full client instantiation
 - [Phase 08]: ClobApiError placed in separate errors.ts file (not types.ts) following module-per-concern convention
+- [Phase 08]: withRetry does not retry non-retryable ClobApiErrors — immediate throw prevents wasted retries on permanent failures
+- [Phase 08]: placeOrder and cancelOrder not wrapped with withRetry — non-idempotent operations must never auto-retry to avoid duplicate orders/cancels
 
 ### Pending Todos
 
@@ -115,5 +118,5 @@ No pending todos.
 ## Session Continuity
 
 Last activity: 2026-03-22
-Stopped at: Completed 08-01-PLAN.md
+Stopped at: Completed 08-02-PLAN.md
 Resume file: None

@@ -74,10 +74,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **POLY-01**: HMAC signing uses base64-decoded API secret and produces URL-safe base64 output matching official Polymarket clob-client SDK
 - [x] **POLY-02**: HMAC signing extracted to standalone exported function with unit tests for regression prevention
-- [ ] **POLY-03**: placeOrder routes to NEG_RISK_EXCHANGE contract when isNegRisk is true, CTF_EXCHANGE when false (default backward-compatible)
+- [x] **POLY-03**: placeOrder routes to NEG_RISK_EXCHANGE contract when isNegRisk is true, CTF_EXCHANGE when false (default backward-compatible)
 - [x] **POLY-04**: Non-2xx CLOB API responses throw ClobApiError with status code, context, and response body; isRetryable/isAuthError getters classify errors
-- [ ] **POLY-05**: Idempotent GET methods retry up to 3 times on retryable errors (429, 5xx) with exponential backoff; placeOrder and cancelOrder never retry
-- [ ] **POLY-06**: markets table has nullable clobTokenIds and negRiskMarketId columns with Drizzle migration
+- [x] **POLY-05**: Idempotent GET methods retry up to 3 times on retryable errors (429, 5xx) with exponential backoff; placeOrder and cancelOrder never retry
+- [x] **POLY-06**: markets table has nullable clobTokenIds and negRiskMarketId columns with Drizzle migration
 
 ## v2 Requirements
 
@@ -164,10 +164,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RPT-10 | Phase 6 | Pending |
 | POLY-01 | Phase 8 | Complete |
 | POLY-02 | Phase 8 | Complete |
-| POLY-03 | Phase 8 | Pending |
+| POLY-03 | Phase 8 | Complete |
 | POLY-04 | Phase 8 | Complete |
-| POLY-05 | Phase 8 | Pending |
-| POLY-06 | Phase 8 | Pending |
+| POLY-05 | Phase 8 | Complete |
+| POLY-06 | Phase 8 | Complete |
 
 **Coverage:**
 - v1 requirements: 44 total
