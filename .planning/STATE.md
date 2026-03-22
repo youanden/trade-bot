@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 02-01-PLAN.md
-last_updated: "2026-03-22T00:52:28.712Z"
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-03-22T01:02:11.818Z"
 progress:
   total_phases: 7
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 4
-  completed_plans: 3
+  completed_plans: 4
 ---
 
 # Project State
@@ -49,6 +49,7 @@ Plan: 2 of 2
 | Phase 01 P01 | 1 | 2 tasks | 3 files |
 | Phase 01-test-infrastructure P02 | 5 | 2 tasks | 8 files |
 | Phase 02-market-data-foundation P01 | 3 | 1 tasks | 4 files |
+| Phase 02 P02 | 2 | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -67,6 +68,8 @@ Recent decisions affecting current work:
 - [Phase 01-test-infrastructure]: LLM strategy test pattern: test env.AI absent (early-return) and env.AI=mockAI (full cycle with empty markets)
 - [Phase 02-market-data-foundation]: Crash shock applied at i===crashTick+1 so prices[crashTick] holds pre-crash high; shock magnitude -5.0 logit to prevent recovery past pre-crash level
 - [Phase 02-market-data-foundation]: Drizzle bun-sqlite adapter is synchronous — use .all()/.run() not await in tests
+- [Phase 02-02]: ISO-8601 string comparison sufficient for no-lookahead enforcement — lexicographic ordering equals chronological ordering
+- [Phase 02-02]: PriceFeed is stateless (no cursor position) — filter on every call ensures correctness at any simulated time
 
 ### Pending Todos
 
@@ -80,6 +83,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-22T00:52:28.710Z
-Stopped at: Completed 02-01-PLAN.md
+Last session: 2026-03-22T01:02:11.816Z
+Stopped at: Completed 02-02-PLAN.md
 Resume file: None

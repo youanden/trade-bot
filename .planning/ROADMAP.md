@@ -13,7 +13,7 @@ This milestone adds a simulation, backtesting, and paper trading layer on top of
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Test Infrastructure** - Vitest configured with in-memory SQLite, schema applied, LLM mock boundary identified (completed 2026-03-22)
-- [ ] **Phase 2: Market Data Foundation** - Deterministic market data generator producing all 5 scenario types with no-lookahead guarantee
+- [x] **Phase 2: Market Data Foundation** - Deterministic market data generator producing all 5 scenario types with no-lookahead guarantee (completed 2026-03-22)
 - [ ] **Phase 3: Exchange Simulation** - SimExchangeClient implementing full ExchangeClient interface with fees, slippage, and partial fills
 - [ ] **Phase 4: Backtest Engine** - Tick-by-tick engine orchestrating StrategyTickFn calls with injectable clock and isolated databases
 - [ ] **Phase 5: Bot Seeder** - CLI seeder populating all 8 bot types with valid configs, market data, and trade history
@@ -45,10 +45,10 @@ Plans:
   2. The generator produces distinct, visually plausible price trajectories for all five scenarios: bull (rising), bear (falling), flat (sideways), volatile (high-amplitude oscillation), crash (sharp reversal)
   3. All generated market and price rows insert into the Drizzle schema without validation errors
   4. A test seeding future prices into the feed asserts that the cursor cannot return any row with a timestamp beyond the current simulated time
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 Plans:
 - [x] 02-01-PLAN.md — Types, PRNG, generator, and scenario tests (DATA-01..DATA-07)
-- [ ] 02-02-PLAN.md — PriceFeed cursor with no-lookahead enforcement
+- [x] 02-02-PLAN.md — PriceFeed cursor with no-lookahead enforcement
 
 ### Phase 3: Exchange Simulation
 **Goal**: SimExchangeClient fully implements the ExchangeClient interface with accurate fee schedules, bid-ask slippage, configurable partial fills, and a factory extension enabling simulation mode with a single environment flag
@@ -116,7 +116,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 7 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Test Infrastructure | 2/2 | Complete   | 2026-03-22 |
-| 2. Market Data Foundation | 1/2 | In Progress|  |
+| 2. Market Data Foundation | 2/2 | Complete   | 2026-03-22 |
 | 3. Exchange Simulation | 0/? | Not started | - |
 | 4. Backtest Engine | 0/? | Not started | - |
 | 5. Bot Seeder | 0/? | Not started | - |
