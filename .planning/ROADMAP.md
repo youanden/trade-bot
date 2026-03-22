@@ -130,7 +130,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 6. Reporting and CLI | 0/? | Not started | - |
 | 7. Paper Trading | 0/? | Not started | - |
 | 8. Polymarket Improvements | 2/2 | Complete   | 2026-03-22 |
-| 9. Discord Notifications & Leaderboard | 0/? | Not started | - |
+| 9. Discord Notifications & Leaderboard | 0/3 | Planned | - |
 
 ### Phase 8: Implement actionable improvements from polymarket ecosystem analysis
 
@@ -171,7 +171,9 @@ Plans:
   5. All Discord notification code uses native fetch (no external Discord library) and runs within Cloudflare Workers constraints
 
 **Depends on:** Phase 8
-**Plans:** 0 plans
+**Plans:** 3 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 9 to break down)
+- [ ] 09-01-PLAN.md — Discord notification service, env binding, and unit tests (DISC-01, DISC-02, DISC-03)
+- [ ] 09-02-PLAN.md — Polymarket leaderboard client and CopyTraderConfig extension (LEAD-01, LEAD-03)
+- [ ] 09-03-PLAN.md — Strategy integration: wire notifications and leaderboard into copyTraderTick (DISC-04, LEAD-02)
