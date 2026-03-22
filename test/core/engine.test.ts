@@ -73,7 +73,9 @@ function makeDeepResearchConfig() {
     tickIntervalMs: 3_600_000,
     platform: "polymarket" as const,
     aiModel: "@cf/meta/llama-3-8b-instruct",
-    categories: ["politics"],
+    // Empty categories so the strategy uses all available markets (simulated markets
+    // have no category field, so a non-empty filter would exclude them all)
+    categories: [] as string[],
     minEdge: 0.05,
     maxPositionSize: 20,
     useWebSearch: false,
@@ -181,7 +183,8 @@ describe("BT-02: engine drives market-maker strategy", () => {
         orderSize: 5,
         maxInventory: 500,
         levels: 1,
-        // cross-arb / logical-arb
+        // cross-arb
+        platforms: ["polymarket", "kalshi"],
         marketIdPairs: [["sim-feed", "sim-feed"]],
         // llm-assessor / deep-research
         aiModel: "@cf/meta/llama-3-8b-instruct",
@@ -190,6 +193,7 @@ describe("BT-02: engine drives market-maker strategy", () => {
         categories: ["politics"],
         useWebSearch: false,
         // weather-arb
+        locations: ["Chicago"],
         targetOutcomes: ["yes"],
         // ladder-straddle
         ladderLevels: 1,
@@ -219,18 +223,19 @@ describe("BT-02: engine drives market-maker strategy", () => {
 
 describe("BT-04: circuit breaker day reset across simulated days", () => {
   test("48-tick scenario spanning 2 days: circuit breaker on day 1 does not block day 2", async () => {
-    // 48 ticks at 30 minutes each = 24 hours = 2 simulated days
+    // 48 ticks at 30 minutes each = 24 hours spanning 2 calendar days.
+    // Start at noon on day 1 so tick 24 (12h later) lands on day 2.
     const TICK_INTERVAL = 30 * 60 * 1000; // 30 min in ms
     const scenario = generateScenario({
       type: "flat",
       seed: 7,
       ticks: 48,
       tickIntervalMs: TICK_INTERVAL,
-      startTime: "2024-06-01T00:00:00.000Z",
+      startTime: "2024-06-01T12:00:00.000Z",
     });
 
-    // Day 1: 2024-06-01, Day 2: 2024-06-02
-    // Ticks 0-23 = day 1, ticks 24-47 = day 2
+    // Day 1: 2024-06-01 (ticks 0–23, 12:00–23:30)
+    // Day 2: 2024-06-02 (ticks 24–47, 00:00–11:30)
 
     const config: BacktestConfig = {
       botType: "market-maker",
