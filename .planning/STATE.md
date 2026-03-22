@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 04-03-PLAN.md
-last_updated: "2026-03-22T17:50:37.589Z"
+stopped_at: Completed 08-01-PLAN.md
+last_updated: "2026-03-22T18:13:40.381Z"
 last_activity: 2026-03-22
 progress:
   total_phases: 9
   completed_phases: 4
-  total_plans: 9
-  completed_plans: 9
+  total_plans: 11
+  completed_plans: 10
 ---
 
 # Project State
@@ -20,12 +20,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-21)
 
 **Core value:** Confidently evaluate and compare all 8 trading strategies against realistic market scenarios before risking real capital.
-**Current focus:** Phase 04 — backtest-engine
+**Current focus:** Phase 08 — implement-actionable-improvements-from-polymarket-ecosystem-analysis
 
 ## Current Position
 
-Phase: 08
-Plan: Not started
+Phase: 08 (implement-actionable-improvements-from-polymarket-ecosystem-analysis) — EXECUTING
+Plan: 2 of 2
 
 ## Performance Metrics
 
@@ -56,6 +56,7 @@ Plan: Not started
 | Phase 04-backtest-engine P01 | 243 | 2 tasks | 3 files |
 | Phase 04 P02 | 5 | 2 tasks | 2 files |
 | Phase 04-backtest-engine P03 | 5 | 1 tasks | 1 files |
+| Phase 08 P01 | 2 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -86,6 +87,8 @@ Recent decisions affecting current work:
 - [Phase 04-backtest-engine]: env._simClient pattern: engine stores SimExchangeClient on env stub so mock.module factory intercept returns correct client to strategies
 - [Phase 04-backtest-engine]: Manual tick loop in BT-04 test (not runBacktest) allows custom strategy injection without registry modification
 - [Phase 04-backtest-engine]: PortfolioRisk constructed with default clockFn in test — SimulatedDate override ensures correct simulated-time behavior
+- [Phase 08]: Extract HMAC signing to standalone buildHmacSignature function to enable isolated unit testing without full client instantiation
+- [Phase 08]: ClobApiError placed in separate errors.ts file (not types.ts) following module-per-concern convention
 
 ### Pending Todos
 
@@ -112,5 +115,5 @@ No pending todos.
 ## Session Continuity
 
 Last activity: 2026-03-22
-Stopped at: Completed quick-260322-jcc
+Stopped at: Completed 08-01-PLAN.md
 Resume file: None
