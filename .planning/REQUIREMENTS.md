@@ -70,6 +70,15 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **RPT-09**: Brier score reported for llm-assessor and deep-research strategies
 - [ ] **RPT-10**: CLI report is runnable as a single command after backtest completes
 
+### Polymarket Client Improvements
+
+- [ ] **POLY-01**: HMAC signing uses base64-decoded API secret and produces URL-safe base64 output matching official Polymarket clob-client SDK
+- [ ] **POLY-02**: HMAC signing extracted to standalone exported function with unit tests for regression prevention
+- [ ] **POLY-03**: placeOrder routes to NEG_RISK_EXCHANGE contract when isNegRisk is true, CTF_EXCHANGE when false (default backward-compatible)
+- [ ] **POLY-04**: Non-2xx CLOB API responses throw ClobApiError with status code, context, and response body; isRetryable/isAuthError getters classify errors
+- [ ] **POLY-05**: Idempotent GET methods retry up to 3 times on retryable errors (429, 5xx) with exponential backoff; placeOrder and cancelOrder never retry
+- [ ] **POLY-06**: markets table has nullable clobTokenIds and negRiskMarketId columns with Drizzle migration
+
 ## v2 Requirements
 
 Deferred to future release. Tracked but not in current roadmap.
@@ -153,12 +162,18 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RPT-08 | Phase 6 | Pending |
 | RPT-09 | Phase 6 | Pending |
 | RPT-10 | Phase 6 | Pending |
+| POLY-01 | Phase 8 | Pending |
+| POLY-02 | Phase 8 | Pending |
+| POLY-03 | Phase 8 | Pending |
+| POLY-04 | Phase 8 | Pending |
+| POLY-05 | Phase 8 | Pending |
+| POLY-06 | Phase 8 | Pending |
 
 **Coverage:**
-- v1 requirements: 38 total
-- Mapped to phases: 38
+- v1 requirements: 44 total
+- Mapped to phases: 44
 - Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-21*
-*Last updated: 2026-03-21 after roadmap creation*
+*Last updated: 2026-03-22 after Phase 8 planning*

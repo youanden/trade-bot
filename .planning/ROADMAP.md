@@ -129,18 +129,25 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 5. Bot Seeder | 0/? | Not started | - |
 | 6. Reporting and CLI | 0/? | Not started | - |
 | 7. Paper Trading | 0/? | Not started | - |
-| 8. Polymarket Improvements | 0/? | Not started | - |
+| 8. Polymarket Improvements | 0/2 | Not started | - |
 | 9. Discord Notifications & Leaderboard | 0/? | Not started | - |
 
 ### Phase 8: Implement actionable improvements from polymarket ecosystem analysis
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Fix HMAC authentication bugs, add neg-risk exchange routing, structured HTTP error handling with retry logic, and Polymarket-specific schema columns — targeted correctness and resilience improvements to the Polymarket CLOB client identified by ecosystem analysis
+**Requirements**: POLY-01, POLY-02, POLY-03, POLY-04, POLY-05, POLY-06
 **Depends on:** Phase 7
-**Plans:** 0 plans
+**Success Criteria** (what must be TRUE):
+  1. HMAC signatures use base64-decoded secret and produce URL-safe base64 output matching the official Polymarket clob-client SDK
+  2. Orders on neg-risk markets route to the NEG_RISK_EXCHANGE contract; standard markets route to CTF_EXCHANGE
+  3. Idempotent GET methods retry up to 3 times on 429/5xx errors with exponential backoff; placeOrder and cancelOrder never retry
+  4. Non-2xx CLOB API responses throw ClobApiError with status code, enabling callers to distinguish retryable from permanent failures
+  5. The markets table has nullable clobTokenIds and negRiskMarketId columns with a Drizzle migration
+**Plans:** 2 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 8 to break down)
+- [ ] 08-01-PLAN.md — HMAC auth fix, extracted signing module, ClobApiError class (POLY-01, POLY-02, POLY-04)
+- [ ] 08-02-PLAN.md — Neg-risk routing, retry logic, schema columns + migration (POLY-03, POLY-05, POLY-06)
 
 ### Phase 9: Discord Trade Notifications & Leaderboard Copy Strategy
 
