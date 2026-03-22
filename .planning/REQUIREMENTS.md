@@ -15,13 +15,13 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Market Data Generation
 
-- [ ] **DATA-01**: Market data generator produces bull trend price series (probability 0→1 bounded, realistic trajectory)
-- [ ] **DATA-02**: Market data generator produces bear trend price series
-- [ ] **DATA-03**: Market data generator produces flat/sideways price series
-- [ ] **DATA-04**: Market data generator produces high-volatility price series
-- [ ] **DATA-05**: Market data generator produces crash scenario price series (sudden reversal)
-- [ ] **DATA-06**: Generated data conforms to existing `markets` and `prices` Drizzle schema
-- [ ] **DATA-07**: Generator uses seeded PRNG for reproducible scenarios across runs
+- [x] **DATA-01**: Market data generator produces bull trend price series (probability 0→1 bounded, realistic trajectory)
+- [x] **DATA-02**: Market data generator produces bear trend price series
+- [x] **DATA-03**: Market data generator produces flat/sideways price series
+- [x] **DATA-04**: Market data generator produces high-volatility price series
+- [x] **DATA-05**: Market data generator produces crash scenario price series (sudden reversal)
+- [x] **DATA-06**: Generated data conforms to existing `markets` and `prices` Drizzle schema
+- [x] **DATA-07**: Generator uses seeded PRNG for reproducible scenarios across runs
 
 ### Bot Seeder
 
@@ -114,13 +114,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TEST-01 | Phase 1 | Complete |
 | TEST-02 | Phase 1 | Complete |
 | TEST-03 | Phase 1 | Complete |
-| DATA-01 | Phase 2 | Pending |
-| DATA-02 | Phase 2 | Pending |
-| DATA-03 | Phase 2 | Pending |
-| DATA-04 | Phase 2 | Pending |
-| DATA-05 | Phase 2 | Pending |
-| DATA-06 | Phase 2 | Pending |
-| DATA-07 | Phase 2 | Pending |
+| DATA-01 | Phase 2 | Complete |
+| DATA-02 | Phase 2 | Complete |
+| DATA-03 | Phase 2 | Complete |
+| DATA-04 | Phase 2 | Complete |
+| DATA-05 | Phase 2 | Complete |
+| DATA-06 | Phase 2 | Complete |
+| DATA-07 | Phase 2 | Complete |
 | SEED-01 | Phase 5 | Pending |
 | SEED-02 | Phase 5 | Pending |
 | SEED-03 | Phase 5 | Pending |

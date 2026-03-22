@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 01-02-PLAN.md
-last_updated: "2026-03-22T00:30:02.039Z"
+stopped_at: Completed 02-01-PLAN.md
+last_updated: "2026-03-22T00:52:28.712Z"
 progress:
   total_phases: 7
   completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  total_plans: 4
+  completed_plans: 3
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-21)
 
 **Core value:** Confidently evaluate and compare all 8 trading strategies against realistic market scenarios before risking real capital.
-**Current focus:** Phase 01 — test-infrastructure
+**Current focus:** Phase 02 — market-data-foundation
 
 ## Current Position
 
-Phase: 2
-Plan: Not started
+Phase: 02 (market-data-foundation) — EXECUTING
+Plan: 2 of 2
 
 ## Performance Metrics
 
@@ -48,6 +48,7 @@ Plan: Not started
 *Updated after each plan completion*
 | Phase 01 P01 | 1 | 2 tasks | 3 files |
 | Phase 01-test-infrastructure P02 | 5 | 2 tasks | 8 files |
+| Phase 02-market-data-foundation P01 | 3 | 1 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -64,6 +65,8 @@ Recent decisions affecting current work:
 - [Phase 01]: makeMockBot uses Record<string, unknown> config to avoid importing BaseBotDO (cloudflare:workers unavailable in bun test)
 - [Phase 01-test-infrastructure]: mock.module() must precede await import() — bun:test requires mocks declared before module load
 - [Phase 01-test-infrastructure]: LLM strategy test pattern: test env.AI absent (early-return) and env.AI=mockAI (full cycle with empty markets)
+- [Phase 02-market-data-foundation]: Crash shock applied at i===crashTick+1 so prices[crashTick] holds pre-crash high; shock magnitude -5.0 logit to prevent recovery past pre-crash level
+- [Phase 02-market-data-foundation]: Drizzle bun-sqlite adapter is synchronous — use .all()/.run() not await in tests
 
 ### Pending Todos
 
@@ -77,6 +80,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-22T00:27:56.804Z
-Stopped at: Completed 01-02-PLAN.md
+Last session: 2026-03-22T00:52:28.710Z
+Stopped at: Completed 02-01-PLAN.md
 Resume file: None

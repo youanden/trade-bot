@@ -45,9 +45,9 @@ Plans:
   2. The generator produces distinct, visually plausible price trajectories for all five scenarios: bull (rising), bear (falling), flat (sideways), volatile (high-amplitude oscillation), crash (sharp reversal)
   3. All generated market and price rows insert into the Drizzle schema without validation errors
   4. A test seeding future prices into the feed asserts that the cursor cannot return any row with a timestamp beyond the current simulated time
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 Plans:
-- [ ] 02-01-PLAN.md — Types, PRNG, generator, and scenario tests (DATA-01..DATA-07)
+- [x] 02-01-PLAN.md — Types, PRNG, generator, and scenario tests (DATA-01..DATA-07)
 - [ ] 02-02-PLAN.md — PriceFeed cursor with no-lookahead enforcement
 
 ### Phase 3: Exchange Simulation
@@ -116,7 +116,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 7 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Test Infrastructure | 2/2 | Complete   | 2026-03-22 |
-| 2. Market Data Foundation | 0/2 | Not started | - |
+| 2. Market Data Foundation | 1/2 | In Progress|  |
 | 3. Exchange Simulation | 0/? | Not started | - |
 | 4. Backtest Engine | 0/? | Not started | - |
 | 5. Bot Seeder | 0/? | Not started | - |
