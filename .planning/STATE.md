@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 04-02-PLAN.md
-last_updated: "2026-03-22T15:03:02.925Z"
+stopped_at: Completed 04-03-PLAN.md
+last_updated: "2026-03-22T17:47:21.140Z"
 last_activity: 2026-03-22
 progress:
-  total_phases: 7
+  total_phases: 9
   completed_phases: 4
-  total_plans: 8
-  completed_plans: 8
+  total_plans: 9
+  completed_plans: 9
 ---
 
 # Project State
@@ -25,7 +25,7 @@ See: .planning/PROJECT.md (updated 2026-03-21)
 ## Current Position
 
 Phase: 04 (backtest-engine) — EXECUTING
-Plan: 2 of 2
+Plan: 2 of 3
 
 ## Performance Metrics
 
@@ -55,6 +55,7 @@ Plan: 2 of 2
 | Phase 03 P02 | 2 | 1 tasks | 2 files |
 | Phase 04-backtest-engine P01 | 243 | 2 tasks | 3 files |
 | Phase 04 P02 | 5 | 2 tasks | 2 files |
+| Phase 04-backtest-engine P03 | 5 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -83,10 +84,17 @@ Recent decisions affecting current work:
 - [Phase 04-backtest-engine]: Engine constructs SimExchangeClient directly via new SimExchangeClient() to avoid mock.module collision in tests
 - [Phase 04-backtest-engine]: globalThis.Date override with SimulatedDate + finally restore pattern enables strategy time simulation without leakage
 - [Phase 04-backtest-engine]: env._simClient pattern: engine stores SimExchangeClient on env stub so mock.module factory intercept returns correct client to strategies
+- [Phase 04-backtest-engine]: Manual tick loop in BT-04 test (not runBacktest) allows custom strategy injection without registry modification
+- [Phase 04-backtest-engine]: PortfolioRisk constructed with default clockFn in test — SimulatedDate override ensures correct simulated-time behavior
 
 ### Pending Todos
 
-1. Add Discord trade notifications and leaderboard copy strategy (area: api) — `.planning/todos/pending/2026-03-22-add-discord-trade-notifications-and-leaderboard-copy-strategy.md`
+No pending todos.
+
+### Roadmap Evolution
+
+- Phase 8 added: Implement actionable improvements from polymarket ecosystem analysis
+- Phase 9 added: Add Discord trade notifications and leaderboard copy strategy (promoted from todo)
 
 ### Blockers/Concerns
 
@@ -103,5 +111,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last activity: 2026-03-22
-Stopped at: Completed 04-02-PLAN.md
+Stopped at: Completed 04-03-PLAN.md
 Resume file: None
