@@ -31,6 +31,7 @@ import {
 } from "./types";
 import { buildHmacSignature } from "./hmac";
 import { ClobApiError } from "./errors";
+import { withRetry } from "./retry";
 import { Logger } from "../../utils/logger";
 
 const USDC_DECIMALS = 6;
@@ -64,8 +65,8 @@ export class PolymarketClient implements ExchangeClient {
     if (params?.cursor) searchParams.set("offset", params.cursor);
     searchParams.set("closed", params?.status === "closed" ? "true" : "false");
 
-    const res = await fetch(
-      `${POLY_URLS.GAMMA}/markets?${searchParams.toString()}`
+    const res = await withRetry(() =>
+      fetch(`${POLY_URLS.GAMMA}/markets?${searchParams.toString()}`)
     );
     if (!res.ok) throw new Error(`Gamma API ${res.status}: ${await res.text()}`);
 
@@ -82,7 +83,7 @@ export class PolymarketClient implements ExchangeClient {
   }
 
   async getMarket(conditionId: string): Promise<MarketInfo> {
-    const res = await this.clobFetch(`/markets/${conditionId}`);
+    const res = await withRetry(() => this.clobFetch(`/markets/${conditionId}`));
     const data: ClobMarket = await res.json();
     return this.clobToMarketInfo(data);
   }
@@ -92,8 +93,8 @@ export class PolymarketClient implements ExchangeClient {
   async getPrice(
     tokenId: string
   ): Promise<{ yes: number; no: number }> {
-    const res = await this.clobFetch(
-      `/midpoint?token_id=${tokenId}`
+    const res = await withRetry(() =>
+      this.clobFetch(`/midpoint?token_id=${tokenId}`)
     );
     const data = await res.json() as any;
     const mid = Number(data.mid);
@@ -101,7 +102,7 @@ export class PolymarketClient implements ExchangeClient {
   }
 
   async getOrderBook(tokenId: string): Promise<OrderBook> {
-    const res = await this.clobFetch(`/book?token_id=${tokenId}`);
+    const res = await withRetry(() => this.clobFetch(`/book?token_id=${tokenId}`));
     const data: ClobOrderBook = await res.json();
     return {
       bids: data.bids.map((l) => ({
@@ -143,7 +144,9 @@ export class PolymarketClient implements ExchangeClient {
     const maker = this.config.funderAddress ?? this.config.address;
 
     // Determine exchange contract (negRisk or standard)
-    const exchangeAddress = POLY_CONTRACTS.CTF_EXCHANGE; // TODO: detect negRisk per market
+    const exchangeAddress = order.isNegRisk
+      ? POLY_CONTRACTS.NEG_RISK_EXCHANGE
+      : POLY_CONTRACTS.CTF_EXCHANGE;
 
     const orderData = {
       salt,
@@ -233,7 +236,7 @@ export class PolymarketClient implements ExchangeClient {
   }
 
   async getOrder(orderId: string): Promise<OrderResult> {
-    const res = await this.clobFetch(`/data/order/${orderId}`, { auth: true });
+    const res = await withRetry(() => this.clobFetch(`/data/order/${orderId}`, { auth: true }));
     const data: ClobOpenOrder = await res.json();
     return {
       orderId: data.id,
@@ -246,7 +249,7 @@ export class PolymarketClient implements ExchangeClient {
 
   async getOpenOrders(marketId?: string): Promise<OrderResult[]> {
     const params = marketId ? `?market=${marketId}` : "";
-    const res = await this.clobFetch(`/data/orders${params}`, { auth: true });
+    const res = await withRetry(() => this.clobFetch(`/data/orders${params}`, { auth: true }));
     const data: ClobOpenOrder[] = await res.json();
     return data.map((o) => ({
       orderId: o.id,
@@ -259,8 +262,8 @@ export class PolymarketClient implements ExchangeClient {
   // ── Portfolio ──
 
   async getPositions(): Promise<PositionInfo[]> {
-    const res = await fetch(
-      `${POLY_URLS.DATA}/positions?user=${this.config.address}`
+    const res = await withRetry(() =>
+      fetch(`${POLY_URLS.DATA}/positions?user=${this.config.address}`)
     );
     if (!res.ok) throw new Error(`Data API ${res.status}`);
     const data = await res.json();
@@ -275,7 +278,7 @@ export class PolymarketClient implements ExchangeClient {
   }
 
   async getBalance(): Promise<number> {
-    const res = await this.clobFetch("/balance-allowance", { auth: true });
+    const res = await withRetry(() => this.clobFetch("/balance-allowance", { auth: true }));
     const data = await res.json();
     return Number(
       formatUnits(BigInt((data as any).balance ?? "0"), USDC_DECIMALS)

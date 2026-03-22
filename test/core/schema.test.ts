@@ -40,6 +40,8 @@ describe("in-memory schema", () => {
     expect(colNames).toContain("status");
     expect(colNames).toContain("created_at");
     expect(colNames).toContain("updated_at");
+    expect(colNames).toContain("clob_token_ids");
+    expect(colNames).toContain("neg_risk_market_id");
   });
 
   test("bot_instances table has expected columns", () => {
