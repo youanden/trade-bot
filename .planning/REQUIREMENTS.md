@@ -9,8 +9,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Test Infrastructure
 
-- [ ] **TEST-01**: Vitest configured with in-memory SQLite for strategy unit tests
-- [ ] **TEST-02**: Drizzle schema applied to in-memory SQLite matching production D1 schema
+- [x] **TEST-01**: Vitest configured with in-memory SQLite for strategy unit tests
+- [x] **TEST-02**: Drizzle schema applied to in-memory SQLite matching production D1 schema
 - [ ] **TEST-03**: Each of the 8 strategies has at least one unit test exercising a full tick cycle
 
 ### Market Data Generation
@@ -111,8 +111,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TEST-01 | Phase 1 | Pending |
-| TEST-02 | Phase 1 | Pending |
+| TEST-01 | Phase 1 | Complete |
+| TEST-02 | Phase 1 | Complete |
 | TEST-03 | Phase 1 | Pending |
 | DATA-01 | Phase 2 | Pending |
 | DATA-02 | Phase 2 | Pending |

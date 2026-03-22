@@ -31,9 +31,9 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. All existing Drizzle schema tables are present in the in-memory SQLite after setup, matching production column names and types
   3. At least one unit test per strategy exercises a full tick cycle and passes without calling any real exchange or LLM API
   4. All LLM client injection points in llm-assessor and deep-research strategies are identified and a MockLLMClient stub exists
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 Plans:
-- [ ] 01-01-PLAN.md — Test helpers (createTestDb, mocks) and schema verification
+- [x] 01-01-PLAN.md — Test helpers (createTestDb, mocks) and schema verification
 - [ ] 01-02-PLAN.md — Strategy tick tests for all 8 bot types
 
 ### Phase 2: Market Data Foundation
@@ -112,7 +112,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 7 
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Test Infrastructure | 0/2 | Planning complete | - |
+| 1. Test Infrastructure | 1/2 | In Progress|  |
 | 2. Market Data Foundation | 0/? | Not started | - |
 | 3. Exchange Simulation | 0/? | Not started | - |
 | 4. Backtest Engine | 0/? | Not started | - |
