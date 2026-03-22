@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 01-01-PLAN.md
-last_updated: "2026-03-22T00:24:07.008Z"
+stopped_at: Completed 01-02-PLAN.md
+last_updated: "2026-03-22T00:27:56.806Z"
 progress:
   total_phases: 7
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
+  completed_plans: 2
 ---
 
 # Project State
@@ -47,6 +47,7 @@ Plan: 2 of 2
 
 *Updated after each plan completion*
 | Phase 01 P01 | 1 | 2 tasks | 3 files |
+| Phase 01-test-infrastructure P02 | 5 | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -61,6 +62,8 @@ Recent decisions affecting current work:
 - [Roadmap]: Phase 7 (Paper Trading) can begin after Phase 3 completes, parallel to Phases 4-6
 - [Phase 01]: Use drizzle-orm/bun-sqlite for test DB — matches D1 SQLite semantics without Wrangler runtime
 - [Phase 01]: makeMockBot uses Record<string, unknown> config to avoid importing BaseBotDO (cloudflare:workers unavailable in bun test)
+- [Phase 01-test-infrastructure]: mock.module() must precede await import() — bun:test requires mocks declared before module load
+- [Phase 01-test-infrastructure]: LLM strategy test pattern: test env.AI absent (early-return) and env.AI=mockAI (full cycle with empty markets)
 
 ### Pending Todos
 
@@ -74,6 +77,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-22T00:24:07.006Z
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-03-22T00:27:56.804Z
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None

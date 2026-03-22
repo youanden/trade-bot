@@ -12,7 +12,7 @@ This milestone adds a simulation, backtesting, and paper trading layer on top of
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Test Infrastructure** - Vitest configured with in-memory SQLite, schema applied, LLM mock boundary identified
+- [x] **Phase 1: Test Infrastructure** - Vitest configured with in-memory SQLite, schema applied, LLM mock boundary identified (completed 2026-03-22)
 - [ ] **Phase 2: Market Data Foundation** - Deterministic market data generator producing all 5 scenario types with no-lookahead guarantee
 - [ ] **Phase 3: Exchange Simulation** - SimExchangeClient implementing full ExchangeClient interface with fees, slippage, and partial fills
 - [ ] **Phase 4: Backtest Engine** - Tick-by-tick engine orchestrating StrategyTickFn calls with injectable clock and isolated databases
@@ -31,10 +31,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. All existing Drizzle schema tables are present in the in-memory SQLite after setup, matching production column names and types
   3. At least one unit test per strategy exercises a full tick cycle and passes without calling any real exchange or LLM API
   4. All LLM client injection points in llm-assessor and deep-research strategies are identified and a MockLLMClient stub exists
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 Plans:
 - [x] 01-01-PLAN.md — Test helpers (createTestDb, mocks) and schema verification
-- [ ] 01-02-PLAN.md — Strategy tick tests for all 8 bot types
+- [x] 01-02-PLAN.md — Strategy tick tests for all 8 bot types
 
 ### Phase 2: Market Data Foundation
 **Goal**: A deterministic market data generator produces all five scenario types in schemas compatible with existing Drizzle tables, with a cursor-based feed that enforces no-lookahead access
@@ -112,7 +112,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 7 
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Test Infrastructure | 1/2 | In Progress|  |
+| 1. Test Infrastructure | 2/2 | Complete   | 2026-03-22 |
 | 2. Market Data Foundation | 0/? | Not started | - |
 | 3. Exchange Simulation | 0/? | Not started | - |
 | 4. Backtest Engine | 0/? | Not started | - |
