@@ -4,6 +4,7 @@ import { SimExchangeClient } from "../../src/worker/core/simulation/sim-client";
 import type { SimClientConfig } from "../../src/worker/core/simulation/sim-client";
 import { PriceFeed } from "../../src/worker/core/simulation/feed";
 import { generateScenario } from "../../src/worker/core/simulation/generator";
+import { createExchangeClient } from "../../src/worker/core/exchanges/factory";
 
 // Shared scenario used across most tests
 const scenario = generateScenario({ type: "flat", seed: 42, ticks: 10 });
@@ -359,5 +360,26 @@ describe("EXCH-06 virtual balance", () => {
     expect(result.status).toBe("failed");
     const balance = await client.getBalance();
     expect(balance).toBe(10); // unchanged
+  });
+});
+
+describe("EXCH-07 factory extension", () => {
+  it("createExchangeClient with simFeed returns SimExchangeClient", async () => {
+    const s = generateScenario({ type: "flat", seed: 42, ticks: 10 });
+    const f = new PriceFeed(s);
+    const client = createExchangeClient(
+      {} as Env,
+      "polymarket",
+      { feed: f, config: { simulatedNow: () => s.prices[5].timestamp, virtualBalance: 500 } }
+    );
+    expect(client).toBeInstanceOf(SimExchangeClient);
+    expect((client as SimExchangeClient).platform).toBe("polymarket");
+    const balance = await client.getBalance();
+    expect(balance).toBe(500);
+  });
+
+  it("createExchangeClient without simFeed throws on missing credentials (existing behavior)", () => {
+    expect(() => createExchangeClient({} as Env, "polymarket")).toThrow("Missing POLYMARKET_PRIVATE_KEY");
+    expect(() => createExchangeClient({} as Env, "kalshi")).toThrow("Missing KALSHI_API_KEY");
   });
 });
