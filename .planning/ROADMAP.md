@@ -60,7 +60,10 @@ Plans:
   3. A cross-arb scenario test at a configured 30% leg-2-failure rate produces roughly 30% of orders with partial fills over a large sample
   4. A sim client initialized with a 1000-unit virtual balance cannot fill orders that would exceed that balance
   5. All order and position data returned by SimExchangeClient matches the TypeScript types defined by the ExchangeClient interface (no runtime type errors)
-**Plans**: TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 03-01-PLAN.md — SimExchangeClient TDD implementation (EXCH-01..EXCH-06)
+- [ ] 03-02-PLAN.md — Factory extension with simulation mode (EXCH-07)
 
 ### Phase 4: Backtest Engine
 **Goal**: The backtest engine drives StrategyTickFn calls in time order through all five scenario types with an injectable clock, isolated per-run databases, and equity curve logging — producing trustworthy results free of lookahead bias and wall-clock contamination
@@ -117,7 +120,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 7 
 |-------|----------------|--------|-----------|
 | 1. Test Infrastructure | 2/2 | Complete   | 2026-03-22 |
 | 2. Market Data Foundation | 2/2 | Complete   | 2026-03-22 |
-| 3. Exchange Simulation | 0/? | Not started | - |
+| 3. Exchange Simulation | 0/2 | Not started | - |
 | 4. Backtest Engine | 0/? | Not started | - |
 | 5. Bot Seeder | 0/? | Not started | - |
 | 6. Reporting and CLI | 0/? | Not started | - |
