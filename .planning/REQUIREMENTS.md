@@ -39,7 +39,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **EXCH-04**: SimExchangeClient applies Kalshi fee schedule (1.75¢/contract max) on fills
 - [x] **EXCH-05**: SimExchangeClient models partial fills and leg-2 failure at configurable rates for cross-arb
 - [x] **EXCH-06**: SimExchangeClient supports configurable virtual starting balance per bot
-- [ ] **EXCH-07**: createExchangeClient factory extended with simulation mode (one-line production change)
+- [x] **EXCH-07**: createExchangeClient factory extended with simulation mode (one-line production change)
 
 ### Backtest Engine
 
@@ -132,7 +132,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EXCH-04 | Phase 3 | Complete |
 | EXCH-05 | Phase 3 | Complete |
 | EXCH-06 | Phase 3 | Complete |
-| EXCH-07 | Phase 3 | Pending |
+| EXCH-07 | Phase 3 | Complete |
 | BT-01 | Phase 4 | Pending |
 | BT-02 | Phase 4 | Pending |
 | BT-03 | Phase 4 | Pending |
