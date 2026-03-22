@@ -33,12 +33,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Exchange Simulation
 
-- [ ] **EXCH-01**: SimExchangeClient implements the full ExchangeClient interface
-- [ ] **EXCH-02**: SimExchangeClient serves prices from seeded data at current tick timestamp only (look-ahead bias guard)
-- [ ] **EXCH-03**: SimExchangeClient applies Polymarket fee schedule (0% maker / 2% taker) on fills
-- [ ] **EXCH-04**: SimExchangeClient applies Kalshi fee schedule (1.75¢/contract max) on fills
-- [ ] **EXCH-05**: SimExchangeClient models partial fills and leg-2 failure at configurable rates for cross-arb
-- [ ] **EXCH-06**: SimExchangeClient supports configurable virtual starting balance per bot
+- [x] **EXCH-01**: SimExchangeClient implements the full ExchangeClient interface
+- [x] **EXCH-02**: SimExchangeClient serves prices from seeded data at current tick timestamp only (look-ahead bias guard)
+- [x] **EXCH-03**: SimExchangeClient applies Polymarket fee schedule (0% maker / 2% taker) on fills
+- [x] **EXCH-04**: SimExchangeClient applies Kalshi fee schedule (1.75¢/contract max) on fills
+- [x] **EXCH-05**: SimExchangeClient models partial fills and leg-2 failure at configurable rates for cross-arb
+- [x] **EXCH-06**: SimExchangeClient supports configurable virtual starting balance per bot
 - [ ] **EXCH-07**: createExchangeClient factory extended with simulation mode (one-line production change)
 
 ### Backtest Engine
@@ -126,12 +126,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SEED-03 | Phase 5 | Pending |
 | SEED-04 | Phase 5 | Pending |
 | SEED-05 | Phase 5 | Pending |
-| EXCH-01 | Phase 3 | Pending |
-| EXCH-02 | Phase 3 | Pending |
-| EXCH-03 | Phase 3 | Pending |
-| EXCH-04 | Phase 3 | Pending |
-| EXCH-05 | Phase 3 | Pending |
-| EXCH-06 | Phase 3 | Pending |
+| EXCH-01 | Phase 3 | Complete |
+| EXCH-02 | Phase 3 | Complete |
+| EXCH-03 | Phase 3 | Complete |
+| EXCH-04 | Phase 3 | Complete |
+| EXCH-05 | Phase 3 | Complete |
+| EXCH-06 | Phase 3 | Complete |
 | EXCH-07 | Phase 3 | Pending |
 | BT-01 | Phase 4 | Pending |
 | BT-02 | Phase 4 | Pending |

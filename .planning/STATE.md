@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 02-02-PLAN.md
-last_updated: "2026-03-22T01:04:40.582Z"
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-03-22T01:41:15.204Z"
 progress:
   total_phases: 7
   completed_phases: 2
-  total_plans: 4
-  completed_plans: 4
+  total_plans: 6
+  completed_plans: 5
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-21)
 
 **Core value:** Confidently evaluate and compare all 8 trading strategies against realistic market scenarios before risking real capital.
-**Current focus:** Phase 02 — market-data-foundation
+**Current focus:** Phase 03 — exchange-simulation
 
 ## Current Position
 
-Phase: 3
-Plan: Not started
+Phase: 03 (exchange-simulation) — EXECUTING
+Plan: 2 of 2
 
 ## Performance Metrics
 
@@ -50,6 +50,7 @@ Plan: Not started
 | Phase 01-test-infrastructure P02 | 5 | 2 tasks | 8 files |
 | Phase 02-market-data-foundation P01 | 3 | 1 tasks | 4 files |
 | Phase 02 P02 | 2 | 1 tasks | 2 files |
+| Phase 03 P01 | 4 | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -70,6 +71,8 @@ Recent decisions affecting current work:
 - [Phase 02-market-data-foundation]: Drizzle bun-sqlite adapter is synchronous — use .all()/.run() not await in tests
 - [Phase 02-02]: ISO-8601 string comparison sufficient for no-lookahead enforcement — lexicographic ordering equals chronological ordering
 - [Phase 02-02]: PriceFeed is stateless (no cursor position) — filter on every call ensures correctness at any simulated time
+- [Phase 03]: Kalshi fee float guard: Math.round(raw * 1e8)/1e8 before Math.ceil prevents IEEE-754 noise rounding 175.0000000000003 to 176
+- [Phase 03]: SimExchangeClient fill price from PriceFeed.latestAt(simulatedNow) not order.price — enforces no-lookahead in fee/cost calculations
 
 ### Pending Todos
 
@@ -83,6 +86,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-22T01:02:11.816Z
-Stopped at: Completed 02-02-PLAN.md
+Last session: 2026-03-22T01:41:15.202Z
+Stopped at: Completed 03-01-PLAN.md
 Resume file: None
