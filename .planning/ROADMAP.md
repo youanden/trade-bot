@@ -75,10 +75,11 @@ Plans:
   3. A multi-day backtest where a strategy triggers the daily loss circuit breaker on day 1 resumes trading on simulated day 2 without manual intervention
   4. The llm-assessor and deep-research strategies complete a full backtest run without making any real LLM API calls and produce at least one trade record
   5. All 8 strategies complete at least one full tick cycle in the backtest engine without throwing an uncaught error
-**Plans:** 2/2 plans complete
+**Plans:** 3 plans (2 complete + 1 gap closure)
 Plans:
 - [x] 04-01-PLAN.md — SimulatedBot and PortfolioRisk injectable clock (BT-03, BT-04)
 - [x] 04-02-PLAN.md — BacktestEngine, BacktestClock, equity curve, DB isolation, LLM mock (BT-01, BT-02, BT-05, BT-06, BT-07)
+- [ ] 04-03-PLAN.md — Gap closure: BT-04 engine test circuit-breaker fire-and-reset (BT-04)
 
 ### Phase 5: Bot Seeder
 **Goal**: A callable seeder creates valid bot instances for all 8 strategy types with matching market data and pre-populated trade history, rejecting any invalid config before insertion
@@ -124,7 +125,27 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 7 
 | 1. Test Infrastructure | 2/2 | Complete   | 2026-03-22 |
 | 2. Market Data Foundation | 2/2 | Complete   | 2026-03-22 |
 | 3. Exchange Simulation | 2/2 | Complete   | 2026-03-22 |
-| 4. Backtest Engine | 2/2 | Complete   | 2026-03-22 |
+| 4. Backtest Engine | 2/3 | Gap closure | 2026-03-22 |
 | 5. Bot Seeder | 0/? | Not started | - |
 | 6. Reporting and CLI | 0/? | Not started | - |
 | 7. Paper Trading | 0/? | Not started | - |
+
+### Phase 8: Implement actionable improvements from polymarket ecosystem analysis
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 7
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 8 to break down)
+
+### Phase 9: Add Discord trade notifications and leaderboard copy strategy
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 8
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 9 to break down)
