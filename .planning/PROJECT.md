@@ -45,8 +45,9 @@ Confidently evaluate and compare all 8 trading strategies against realistic mark
 - Each bot runs as a Durable Object with alarm-driven tick loop
 - Dual-platform: Polymarket (EVM/CLOB) and Kalshi (REST) behind unified `ExchangeClient` interface
 - Database: Cloudflare D1 (SQLite) via Drizzle ORM with tables for markets, prices, bot_instances, orders, trades, positions
-- Test infrastructure: Vitest available, no existing test suite for strategy simulation
-- The backtest engine needs to mock/replace `ExchangeClient` with a simulated exchange that feeds from generated or captured market data
+- Test infrastructure: bun:test with 88 tests across 15 files
+- SimExchangeClient implements full ExchangeClient interface with Polymarket/Kalshi fee simulation, partial fills, and virtual balance
+- Factory extended: `createExchangeClient(env, platform, simFeed?)` returns SimExchangeClient when simFeed provided
 - Paper trading needs a similar mock but consuming live market feeds
 
 ## Constraints
@@ -61,7 +62,7 @@ Confidently evaluate and compare all 8 trading strategies against realistic mark
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
 | CLI report over dashboard | Faster iteration, less scope, can always add UI later | — Pending |
-| Mock ExchangeClient for backtest | Strategies already use interface; swap implementation for simulation | — Pending |
+| Mock ExchangeClient for backtest | Strategies already use interface; swap implementation for simulation | ✓ Validated Phase 03 |
 | In-memory SQLite for unit tests | Matches D1 SQLite semantics without needing Wrangler | ✓ Validated Phase 01 |
 | Defer arb spread scenarios | Directional trends cover most strategies; arb spreads add complexity | — Pending |
 
@@ -83,4 +84,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-21 after Phase 02 completion*
+*Last updated: 2026-03-22 after Phase 03 completion*
