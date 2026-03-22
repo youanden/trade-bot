@@ -1,6 +1,7 @@
 import { describe, it, expect } from "bun:test";
 import { buildHmacSignature } from "../../src/worker/core/exchanges/polymarket/hmac";
 import { ClobApiError } from "../../src/worker/core/exchanges/polymarket/errors";
+import { withRetry } from "../../src/worker/core/exchanges/polymarket/retry";
 
 describe("buildHmacSignature", () => {
   it("produces URL-safe base64 output (no + or / characters)", async () => {
@@ -132,5 +133,61 @@ describe("ClobApiError", () => {
   it("isAuthError returns false for status 500", () => {
     const err = new ClobApiError(500, "CLOB GET /markets", "server error");
     expect(err.isAuthError).toBe(false);
+  });
+});
+
+describe("withRetry", () => {
+  it("returns result on first success (no retries)", async () => {
+    let calls = 0;
+    const result = await withRetry(() => {
+      calls++;
+      return Promise.resolve("ok");
+    }, 3, 1);
+    expect(result).toBe("ok");
+    expect(calls).toBe(1);
+  });
+
+  it("retries on ClobApiError with isRetryable=true and succeeds on 2nd attempt", async () => {
+    let calls = 0;
+    const result = await withRetry(() => {
+      calls++;
+      if (calls < 2) throw new ClobApiError(500, "CLOB GET /markets", "server error");
+      return Promise.resolve("ok");
+    }, 3, 1);
+    expect(result).toBe("ok");
+    expect(calls).toBe(2);
+  });
+
+  it("does NOT retry on ClobApiError with isRetryable=false (throws immediately)", async () => {
+    let calls = 0;
+    await expect(
+      withRetry(() => {
+        calls++;
+        throw new ClobApiError(400, "CLOB POST /order", "bad request");
+      }, 3, 1)
+    ).rejects.toBeInstanceOf(ClobApiError);
+    expect(calls).toBe(1);
+  });
+
+  it("throws after maxAttempts (3) exhausted", async () => {
+    let calls = 0;
+    await expect(
+      withRetry(() => {
+        calls++;
+        throw new ClobApiError(503, "CLOB GET /markets", "service unavailable");
+      }, 3, 1)
+    ).rejects.toBeInstanceOf(ClobApiError);
+    expect(calls).toBe(3);
+  });
+
+  it("retries on generic Error (non-ClobApiError) since network errors are not ClobApiError instances", async () => {
+    let calls = 0;
+    const result = await withRetry(() => {
+      calls++;
+      if (calls < 3) throw new Error("network error");
+      return Promise.resolve("ok");
+    }, 3, 1);
+    expect(result).toBe("ok");
+    expect(calls).toBe(3);
   });
 });
