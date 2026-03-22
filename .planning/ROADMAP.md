@@ -118,7 +118,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 7 depends on Phase 3, can run in parallel with Phases 4-6 after Phase 3 completes)
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 (Phase 7 depends on Phase 3, can run in parallel with Phases 4-6 after Phase 3 completes. Phase 9 depends on Phase 8.)
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -129,6 +129,8 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 7 
 | 5. Bot Seeder | 0/? | Not started | - |
 | 6. Reporting and CLI | 0/? | Not started | - |
 | 7. Paper Trading | 0/? | Not started | - |
+| 8. Polymarket Improvements | 0/? | Not started | - |
+| 9. Discord Notifications & Leaderboard | 0/? | Not started | - |
 
 ### Phase 8: Implement actionable improvements from polymarket ecosystem analysis
 
@@ -140,10 +142,27 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 7 
 Plans:
 - [ ] TBD (run /gsd:plan-phase 8 to break down)
 
-### Phase 9: Add Discord trade notifications and leaderboard copy strategy
+### Phase 9: Discord Trade Notifications & Leaderboard Copy Strategy
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Trade execution events post formatted notifications to Discord via webhook, and the copy trader strategy dynamically selects traders from the Polymarket leaderboard API
+
+**Requirements:** DISC-01, DISC-02, DISC-03, DISC-04, LEAD-01, LEAD-02, LEAD-03
+
+- DISC-01: Discord webhook notification service that formats trade events (COPY BUY/SELL, TAKE PROFIT, STOP LOSS) into emoji-rich messages and POSTs via fetch
+- DISC-02: Webhook URL stored as Cloudflare Workers secret binding (DISCORD_WEBHOOK_URL)
+- DISC-03: Message format includes trade type, market name, outcome, price, shares, cost, fees, P&L on sells, trader address (abbreviated), timestamp, portfolio summary footer
+- DISC-04: Notification service integrated into copy trader strategy trade execution flow
+- LEAD-01: Polymarket leaderboard API client to fetch top trader rankings and performance metrics
+- LEAD-02: Copy trader strategy uses leaderboard data to dynamically update tracked_traders list
+- LEAD-03: Leaderboard refresh interval configurable in bot config
+
+**Success Criteria** (what must be TRUE):
+  1. Executing a copy trade in simulation posts a formatted Discord message containing trade type emoji, market name, price, and P&L to a test webhook URL
+  2. The webhook URL is read from env.DISCORD_WEBHOOK_URL binding -- no hardcoded URLs exist in source
+  3. The leaderboard client fetches current top traders from Polymarket API and returns them as TrackedTrader-compatible records
+  4. A copy trader bot configured with leaderboard mode automatically refreshes its tracked trader list at the configured interval
+  5. All Discord notification code uses native fetch (no external Discord library) and runs within Cloudflare Workers constraints
+
 **Depends on:** Phase 8
 **Plans:** 0 plans
 
