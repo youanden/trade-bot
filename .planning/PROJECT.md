@@ -28,7 +28,7 @@ Confidently evaluate and compare all 8 trading strategies against realistic mark
 - [ ] Paper trading mode that runs bots against real data with simulated balances
 - [ ] CLI performance report (PnL, Sharpe ratio, drawdown, win rate) per strategy per scenario
 - [ ] Strategy comparison across scenarios in CLI output
-- [ ] Unit tests for strategy logic with in-memory SQLite (Vitest)
+- [x] Unit tests for strategy logic with in-memory SQLite — Validated in Phase 01: test-infrastructure
 - [ ] Integration tests on Wrangler dev with D1 local
 
 ### Out of Scope
@@ -62,7 +62,7 @@ Confidently evaluate and compare all 8 trading strategies against realistic mark
 |----------|-----------|---------|
 | CLI report over dashboard | Faster iteration, less scope, can always add UI later | — Pending |
 | Mock ExchangeClient for backtest | Strategies already use interface; swap implementation for simulation | — Pending |
-| In-memory SQLite for unit tests | Matches D1 SQLite semantics without needing Wrangler | — Pending |
+| In-memory SQLite for unit tests | Matches D1 SQLite semantics without needing Wrangler | ✓ Validated Phase 01 |
 | Defer arb spread scenarios | Directional trends cover most strategies; arb spreads add complexity | — Pending |
 
 ## Evolution
@@ -83,4 +83,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-21 after initialization*
+*Last updated: 2026-03-21 after Phase 01 completion*
