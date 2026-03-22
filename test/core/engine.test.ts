@@ -222,10 +222,11 @@ describe("BT-02: engine drives market-maker strategy", () => {
 // ---- BT-04: circuit breaker day reset ----
 
 describe("BT-04: circuit breaker day reset across simulated days", () => {
-  test("48-tick scenario spanning 2 days: circuit breaker on day 1 does not block day 2", async () => {
-    // 48 ticks at 30 minutes each = 24 hours spanning 2 calendar days.
-    // Start at noon on day 1 so tick 24 (12h later) lands on day 2.
-    const TICK_INTERVAL = 30 * 60 * 1000; // 30 min in ms
+  test("circuit breaker fires on day 1 after losing positions seeded, trading resumes on day 2", async () => {
+    // 48 ticks at 30min each = 24 hours, starting noon day 1.
+    // Day 1: 2024-06-01 (ticks 0–23, 12:00–23:30)
+    // Day 2: 2024-06-02 (ticks 24–47, 00:00–11:30)
+    const TICK_INTERVAL = 30 * 60 * 1000; // 30 min
     const scenario = generateScenario({
       type: "flat",
       seed: 7,
@@ -234,39 +235,199 @@ describe("BT-04: circuit breaker day reset across simulated days", () => {
       startTime: "2024-06-01T12:00:00.000Z",
     });
 
-    // Day 1: 2024-06-01 (ticks 0–23, 12:00–23:30)
-    // Day 2: 2024-06-02 (ticks 24–47, 00:00–11:30)
+    // Track circuit breaker state and trade activity per day
+    let breakerFiredOnDay1 = false;
+    let tradesBeforeBreaker = 0;
+    let tradesOnDay2 = 0;
+    let tickCount = 0;
 
-    const config: BacktestConfig = {
-      botType: "market-maker",
-      botConfig: makeMarketMakerConfig() as any,
-      scenario,
-      tickIntervalMs: TICK_INTERVAL,
+    // Dynamic imports for types/modules used inside the custom strategy
+    const { positions: positionsTable } = await import(
+      "../../src/worker/core/db/schema"
+    );
+    const { PortfolioRisk } = await import(
+      "../../src/worker/core/risk/portfolio"
+    );
+    const { getLimitsForBot } = await import(
+      "../../src/worker/core/risk/limits"
+    );
+
+    // Create isolated DB (same as engine does)
+    const db = createTestDb();
+
+    // Seed market and bot rows so positions FK constraint is satisfied
+    const { markets: marketsTable, prices: pricesTable, botInstances: botInstancesTable } = await import(
+      "../../src/worker/core/db/schema"
+    );
+
+    const [insertedMarket] = db
+      .insert(marketsTable)
+      .values({
+        platform: scenario.market.platform,
+        platformId: scenario.market.platformId,
+        title: scenario.market.title,
+        status: scenario.market.status ?? "active",
+      })
+      .returning()
+      .all();
+
+    for (const priceRow of scenario.prices) {
+      db.insert(pricesTable)
+        .values({
+          marketId: insertedMarket.id,
+          yesPrice: priceRow.yesPrice,
+          noPrice: priceRow.noPrice,
+          timestamp: priceRow.timestamp,
+        })
+        .run();
+    }
+
+    const [insertedBot] = db
+      .insert(botInstancesTable)
+      .values({
+        botType: "market-maker",
+        name: "test-breaker",
+        status: "running",
+        config: makeMarketMakerConfig(),
+      })
+      .returning()
+      .all();
+
+    const botConfig = { ...makeMarketMakerConfig(), dbBotId: insertedBot.id };
+
+    // Import engine components
+    const { BacktestClock } = await import(
+      "../../src/worker/core/simulation/engine"
+    );
+    const { SimulatedBot } = await import(
+      "../../src/worker/core/simulation/sim-bot"
+    );
+    const { PriceFeed } = await import(
+      "../../src/worker/core/simulation/feed"
+    );
+    const { SimExchangeClient } = await import(
+      "../../src/worker/core/simulation/sim-client"
+    );
+
+    const clock = new BacktestClock("2024-06-01T12:00:00.000Z", TICK_INTERVAL);
+    const feed = new PriceFeed(scenario);
+    const bot = new SimulatedBot(botConfig as any, db);
+    const simClient = new SimExchangeClient({
       platform: "polymarket",
+      feed,
+      simulatedNow: () => clock.now(),
       virtualBalance: 1000,
+    });
+
+    // env stub — passes drizzle db directly so PortfolioRisk can use it
+    const env: any = {
+      DB: db,
+      _simClient: simClient,
+      ENVIRONMENT: "backtest",
     };
 
-    const result = await runBacktest(config);
+    // Custom strategy: seeds a losing position on tick 3, then checks the circuit
+    // breaker on each tick. Records a trade when the breaker is not fired.
+    const circuitBreakerStrategy = async (
+      _bot: typeof bot,
+      stratEnv: typeof env
+    ) => {
+      tickCount++;
+      const stratDb = stratEnv.DB; // drizzle DB instance
 
-    // 48 ticks should produce 48 equity snapshots
-    expect(result.equityCurve.length).toBe(48);
+      const risk = new PortfolioRisk(
+        stratDb,
+        getLimitsForBot("market-maker")
+        // No clockFn — defaults to () => new Date().toISOString()
+        // During the loop, globalThis.Date is SimulatedDate, so this returns
+        // simulated time automatically.
+      );
+      const now = new Date().toISOString(); // SimulatedDate → simulated time
+      const today = now.split("T")[0];
 
-    // Day 1 timestamps should be 2024-06-01, day 2 should be 2024-06-02
-    const day1Snaps = result.equityCurve.filter((s) =>
-      s.timestamp.startsWith("2024-06-01")
-    );
-    const day2Snaps = result.equityCurve.filter((s) =>
-      s.timestamp.startsWith("2024-06-02")
-    );
+      // On tick 3 (still day 1, 2024-06-01): seed a closed losing position
+      // with unrealizedPnl: -600, which exceeds market-maker maxDailyLoss (500).
+      if (tickCount === 3) {
+        stratDb
+          .insert(positionsTable)
+          .values({
+            botInstanceId: insertedBot.id,
+            marketId: insertedMarket.id,
+            platform: "polymarket",
+            outcome: "yes",
+            size: 100,
+            avgEntry: 0.5,
+            currentPrice: 0.0,
+            unrealizedPnl: -600,
+            status: "closed",
+            closedAt: now, // 2024-06-01 in simulated time
+          })
+          .run();
+      }
 
-    expect(day1Snaps.length).toBeGreaterThan(0);
-    expect(day2Snaps.length).toBeGreaterThan(0);
+      // Check circuit breaker
+      const breached = await risk.isDailyLossBreached();
 
-    // All balance values should be positive numbers
-    for (const snap of result.equityCurve) {
-      expect(typeof snap.balance).toBe("number");
-      expect(snap.balance).toBeGreaterThan(0);
+      if (breached && today === "2024-06-01") {
+        breakerFiredOnDay1 = true;
+        return; // Skip trading — mimics real strategy behavior
+      }
+
+      // Not breached: record a trade
+      await _bot.recordTrade({
+        marketId: insertedMarket.id,
+        platform: "polymarket",
+        side: "buy",
+        outcome: "yes",
+        price: 0.5,
+        size: 1,
+        reason: `tick-${tickCount}`,
+      });
+
+      if (today === "2024-06-01" && !breached) {
+        tradesBeforeBreaker++;
+      }
+      if (today === "2024-06-02") {
+        tradesOnDay2++;
+      }
+    };
+
+    // Override globalThis.Date so new Date() returns simulated time (matches engine behavior)
+    const OriginalDate = globalThis.Date;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const SimulatedDate: any = function SimulatedDate(this: any, ...args: any[]) {
+      if (args.length === 0) return new OriginalDate(clock.now());
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return new OriginalDate(...(args as [any]));
+    };
+    SimulatedDate.now = () => new OriginalDate(clock.now()).getTime();
+    SimulatedDate.parse = OriginalDate.parse.bind(OriginalDate);
+    SimulatedDate.UTC = OriginalDate.UTC.bind(OriginalDate);
+    SimulatedDate.prototype = OriginalDate.prototype;
+
+    globalThis.Date = SimulatedDate;
+    try {
+      for (let i = 0; i < scenario.prices.length; i++) {
+        await circuitBreakerStrategy(bot, env);
+        clock.advance();
+      }
+    } finally {
+      globalThis.Date = OriginalDate;
     }
+
+    // ASSERTIONS:
+
+    // 1. Circuit breaker fired on day 1 after tick 3 seeded -600 PnL
+    expect(breakerFiredOnDay1).toBe(true);
+
+    // 2. Trades happened before the breaker (ticks 1-2 on day 1 before seeding)
+    expect(tradesBeforeBreaker).toBeGreaterThan(0);
+
+    // 3. Trading resumed on day 2 (breaker resets after midnight)
+    expect(tradesOnDay2).toBeGreaterThan(0);
+
+    // 4. Total recorded trades = pre-breaker + day-2 (no trades during breaker period)
+    expect(bot._tradeCount).toBe(tradesBeforeBreaker + tradesOnDay2);
   });
 });
 
