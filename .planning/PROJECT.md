@@ -21,8 +21,8 @@ Confidently evaluate and compare all 8 trading strategies against realistic mark
 ### Active
 
 - [ ] Seeder for all 8 bot types with valid configs, market data, and pre-populated trades/positions
-- [ ] Market data generator for bull, bear, and flat trend patterns
-- [ ] Market data generator for volatile and crash scenarios
+- [x] Market data generator for bull, bear, and flat trend patterns — Validated in Phase 02: market-data-foundation
+- [x] Market data generator for volatile and crash scenarios — Validated in Phase 02: market-data-foundation
 - [ ] Real market data capture and replay from Polymarket/Kalshi
 - [ ] Backtest engine that replays market data through strategies and measures performance
 - [ ] Paper trading mode that runs bots against real data with simulated balances
@@ -83,4 +83,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-21 after Phase 01 completion*
+*Last updated: 2026-03-21 after Phase 02 completion*
