@@ -78,7 +78,7 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-None yet.
+1. Add Discord trade notifications and leaderboard copy strategy (area: api) — `.planning/todos/pending/2026-03-22-add-discord-trade-notifications-and-leaderboard-copy-strategy.md`
 
 ### Blockers/Concerns
 
