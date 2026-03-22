@@ -5,7 +5,7 @@ import type { BunSQLiteDatabase } from "drizzle-orm/bun-sqlite";
 
 /**
  * SimulatedBot duck-types the BaseBotDO interface for backtest use.
- * Does NOT extend DurableObject or import from "cloudflare:workers".
+ * Does NOT extend DurableObject — safe to run in bun:test without Wrangler.
  * Strategies access this via `(bot as any).config` and `(bot as any).recordTrade(...)`.
  */
 export class SimulatedBot {
