@@ -43,13 +43,13 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Backtest Engine
 
-- [ ] **BT-01**: BacktestClock advances tick-by-tick at configurable intervals, replacing wall clock
-- [ ] **BT-02**: Backtest engine drives StrategyTickFn calls in time order using BacktestClock
-- [ ] **BT-03**: SimulatedBot duck-types BaseBotDO interface (config access, recordTrade, getStatus)
-- [ ] **BT-04**: PortfolioRisk.isDailyLossBreached() uses injectable clock instead of new Date()
-- [ ] **BT-05**: Each backtest run uses an isolated database (no cross-contamination between runs)
-- [ ] **BT-06**: Equity curve logged as timestamped balance snapshots during replay
-- [ ] **BT-07**: LLM-dependent strategies (llm-assessor, deep-research) use a mock LLM client in backtest
+- [x] **BT-01**: BacktestClock advances tick-by-tick at configurable intervals, replacing wall clock
+- [x] **BT-02**: Backtest engine drives StrategyTickFn calls in time order using BacktestClock
+- [x] **BT-03**: SimulatedBot duck-types BaseBotDO interface (config access, recordTrade, getStatus)
+- [x] **BT-04**: PortfolioRisk.isDailyLossBreached() uses injectable clock instead of new Date()
+- [x] **BT-05**: Each backtest run uses an isolated database (no cross-contamination between runs)
+- [x] **BT-06**: Equity curve logged as timestamped balance snapshots during replay
+- [x] **BT-07**: LLM-dependent strategies (llm-assessor, deep-research) use a mock LLM client in backtest
 
 ### Paper Trading
 
@@ -133,13 +133,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EXCH-05 | Phase 3 | Complete |
 | EXCH-06 | Phase 3 | Complete |
 | EXCH-07 | Phase 3 | Complete |
-| BT-01 | Phase 4 | Pending |
-| BT-02 | Phase 4 | Pending |
-| BT-03 | Phase 4 | Pending |
-| BT-04 | Phase 4 | Pending |
-| BT-05 | Phase 4 | Pending |
-| BT-06 | Phase 4 | Pending |
-| BT-07 | Phase 4 | Pending |
+| BT-01 | Phase 4 | Complete |
+| BT-02 | Phase 4 | Complete |
+| BT-03 | Phase 4 | Complete |
+| BT-04 | Phase 4 | Complete |
+| BT-05 | Phase 4 | Complete |
+| BT-06 | Phase 4 | Complete |
+| BT-07 | Phase 4 | Complete |
 | PAPER-01 | Phase 7 | Pending |
 | PAPER-02 | Phase 7 | Pending |
 | PAPER-03 | Phase 7 | Pending |

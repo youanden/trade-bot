@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Test Infrastructure** - Vitest configured with in-memory SQLite, schema applied, LLM mock boundary identified (completed 2026-03-22)
 - [x] **Phase 2: Market Data Foundation** - Deterministic market data generator producing all 5 scenario types with no-lookahead guarantee (completed 2026-03-22)
 - [x] **Phase 3: Exchange Simulation** - SimExchangeClient implementing full ExchangeClient interface with fees, slippage, and partial fills (completed 2026-03-22)
-- [ ] **Phase 4: Backtest Engine** - Tick-by-tick engine orchestrating StrategyTickFn calls with injectable clock and isolated databases
+- [x] **Phase 4: Backtest Engine** - Tick-by-tick engine orchestrating StrategyTickFn calls with injectable clock and isolated databases (completed 2026-03-22)
 - [ ] **Phase 5: Bot Seeder** - CLI seeder populating all 8 bot types with valid configs, market data, and trade history
 - [ ] **Phase 6: Reporting and CLI** - CLI performance report with per-strategy metrics and cross-strategy comparison table
 - [ ] **Phase 7: Paper Trading** - Live-price paper trading mode using SimExchangeClient with virtual balance
@@ -75,10 +75,10 @@ Plans:
   3. A multi-day backtest where a strategy triggers the daily loss circuit breaker on day 1 resumes trading on simulated day 2 without manual intervention
   4. The llm-assessor and deep-research strategies complete a full backtest run without making any real LLM API calls and produce at least one trade record
   5. All 8 strategies complete at least one full tick cycle in the backtest engine without throwing an uncaught error
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 Plans:
 - [x] 04-01-PLAN.md — SimulatedBot and PortfolioRisk injectable clock (BT-03, BT-04)
-- [ ] 04-02-PLAN.md — BacktestEngine, BacktestClock, equity curve, DB isolation, LLM mock (BT-01, BT-02, BT-05, BT-06, BT-07)
+- [x] 04-02-PLAN.md — BacktestEngine, BacktestClock, equity curve, DB isolation, LLM mock (BT-01, BT-02, BT-05, BT-06, BT-07)
 
 ### Phase 5: Bot Seeder
 **Goal**: A callable seeder creates valid bot instances for all 8 strategy types with matching market data and pre-populated trade history, rejecting any invalid config before insertion
@@ -124,7 +124,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 7 
 | 1. Test Infrastructure | 2/2 | Complete   | 2026-03-22 |
 | 2. Market Data Foundation | 2/2 | Complete   | 2026-03-22 |
 | 3. Exchange Simulation | 2/2 | Complete   | 2026-03-22 |
-| 4. Backtest Engine | 1/2 | In Progress|  |
+| 4. Backtest Engine | 2/2 | Complete   | 2026-03-22 |
 | 5. Bot Seeder | 0/? | Not started | - |
 | 6. Reporting and CLI | 0/? | Not started | - |
 | 7. Paper Trading | 0/? | Not started | - |

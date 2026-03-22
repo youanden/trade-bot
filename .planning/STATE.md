@@ -3,13 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-03-22T14:55:29.656Z"
+stopped_at: Completed 04-02-PLAN.md
+last_updated: "2026-03-22T15:03:02.925Z"
+last_activity: 2026-03-22
 progress:
   total_phases: 7
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
 ---
 
 # Project State
@@ -53,6 +54,7 @@ Plan: 2 of 2
 | Phase 03 P01 | 4 | 1 tasks | 2 files |
 | Phase 03 P02 | 2 | 1 tasks | 2 files |
 | Phase 04-backtest-engine P01 | 243 | 2 tasks | 3 files |
+| Phase 04 P02 | 5 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -78,6 +80,9 @@ Recent decisions affecting current work:
 - [Phase 03]: simFeed spread order: platform + feed set first, then config spread last so caller overrides take priority
 - [Phase 04-backtest-engine]: SimulatedBot imports BunSQLiteDatabase directly from drizzle-orm/bun-sqlite (not TestDb from test helpers) to keep src/ clean from test/ imports
 - [Phase 04-backtest-engine]: PortfolioRisk clockFn defaults to () => new Date().toISOString() — all 8 existing strategy callers unchanged, backtest passes explicit clock for day simulation
+- [Phase 04-backtest-engine]: Engine constructs SimExchangeClient directly via new SimExchangeClient() to avoid mock.module collision in tests
+- [Phase 04-backtest-engine]: globalThis.Date override with SimulatedDate + finally restore pattern enables strategy time simulation without leakage
+- [Phase 04-backtest-engine]: env._simClient pattern: engine stores SimExchangeClient on env stub so mock.module factory intercept returns correct client to strategies
 
 ### Pending Todos
 
@@ -97,6 +102,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last activity: 2026-03-22 - Completed quick task 260322-f6e: clone polymarket-system repo and analyze/compare against our current architecture, suggesting improvements
-Stopped at: Completed quick task 260322-f6e
+Last activity: 2026-03-22
+Stopped at: Completed 04-02-PLAN.md
 Resume file: None
