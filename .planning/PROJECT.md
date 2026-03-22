@@ -24,7 +24,7 @@ Confidently evaluate and compare all 8 trading strategies against realistic mark
 - [x] Market data generator for bull, bear, and flat trend patterns — Validated in Phase 02: market-data-foundation
 - [x] Market data generator for volatile and crash scenarios — Validated in Phase 02: market-data-foundation
 - [ ] Real market data capture and replay from Polymarket/Kalshi
-- [ ] Backtest engine that replays market data through strategies and measures performance
+- [x] Backtest engine that replays market data through strategies and measures performance — Validated in Phase 04: backtest-engine
 - [ ] Paper trading mode that runs bots against real data with simulated balances
 - [ ] CLI performance report (PnL, Sharpe ratio, drawdown, win rate) per strategy per scenario
 - [ ] Strategy comparison across scenarios in CLI output
