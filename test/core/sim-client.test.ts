@@ -134,11 +134,15 @@ describe("EXCH-02 no-lookahead", () => {
 });
 
 describe("EXCH-03 Polymarket taker fee", () => {
+  // Use prices[0].timestamp so feed returns exactly startPrice=0.5 for fee calculations
+  const tick0 = scenario.prices[0].timestamp;
+
   it("taker buy of 100 contracts at price 0.50: balance decreases by 51 (cost=50, fee=1)", async () => {
     const client = makeClient({
       platform: "polymarket",
       virtualBalance: 1000,
       takerFeeRate: 0.02,
+      simulatedNow: () => tick0,
     });
     const result = await client.placeOrder({
       marketId: "test-market",
@@ -149,6 +153,7 @@ describe("EXCH-03 Polymarket taker fee", () => {
     });
     expect(result.status).toBe("filled");
     const balance = await client.getBalance();
+    // fill price = feed price at tick 0 = 0.5
     // cost = 100 * 0.5 = 50, fee = 50 * 0.02 = 1, total = 51
     expect(balance).toBeCloseTo(949, 5);
   });
@@ -158,6 +163,7 @@ describe("EXCH-03 Polymarket taker fee", () => {
       platform: "polymarket",
       virtualBalance: 1000,
       takerFeeRate: 0.02,
+      simulatedNow: () => tick0,
     });
     const result = await client.placeOrder({
       marketId: "test-market",
@@ -169,16 +175,21 @@ describe("EXCH-03 Polymarket taker fee", () => {
     });
     expect(result.status).toBe("filled");
     const balance = await client.getBalance();
+    // fill price = feed price at tick 0 = 0.5
     // cost = 100 * 0.5 = 50, fee = 0 (maker), total = 50
     expect(balance).toBeCloseTo(950, 5);
   });
 });
 
 describe("EXCH-04 Kalshi fee cap", () => {
+  // Use prices[0].timestamp so feed returns exactly startPrice=0.5 for fee calculations
+  const tick0 = scenario.prices[0].timestamp;
+
   it("100 contracts at P=0.50 on kalshi: deduction is 51.75 (cost=50 + fee=1.75)", async () => {
     const client = makeClient({
       platform: "kalshi",
       virtualBalance: 1000,
+      simulatedNow: () => tick0,
     });
     const result = await client.placeOrder({
       marketId: "test-market",
@@ -189,20 +200,35 @@ describe("EXCH-04 Kalshi fee cap", () => {
     });
     expect(result.status).toBe("filled");
     const balance = await client.getBalance();
+    // fill price = feed price at tick 0 = 0.5
     // cost = 100 * 0.5 = 50
     // fee per contract at P=0.50: ceil(0.07 * 0.50 * 0.50 * 10000) / 10000
-    //                           = ceil(0.07 * 0.25 * 10000) / 10000
     //                           = ceil(175) / 10000 = 175/10000 = 0.0175
-    // total fee = 100 * 0.0175 = 1.75
-    // total deduction = 51.75
+    // total fee = 100 * 0.0175 = 1.75, total deduction = 51.75
     expect(balance).toBeCloseTo(948.25, 3);
   });
 
   it("fee per contract at P=0.30 is 0.0147", async () => {
-    const client = makeClient({
+    // Use a custom scenario where tick 0 price = 0.3
+    const s30 = generateScenario({
+      type: "flat",
+      seed: 1,
+      ticks: 5,
+      startPrice: 0.3,
+    });
+    const feed30 = new PriceFeed(s30);
+    const t0 = s30.prices[0].timestamp;
+
+    // Verify tick-0 price is exactly 0.3
+    expect(s30.prices[0].yesPrice).toBe(0.3);
+
+    const client = new SimExchangeClient({
       platform: "kalshi",
+      feed: feed30,
+      simulatedNow: () => t0,
       virtualBalance: 1000,
     });
+
     // fee per contract at P=0.30: ceil(0.07 * 0.30 * 0.70 * 10000) / 10000
     //                           = ceil(0.07 * 0.21 * 10000) / 10000
     //                           = ceil(147) / 10000 = 0.0147
@@ -215,6 +241,7 @@ describe("EXCH-04 Kalshi fee cap", () => {
     });
     expect(result.status).toBe("filled");
     const balance = await client.getBalance();
+    // fill price = 0.3 (from feed at tick 0)
     // cost = 100 * 0.3 = 30
     // fee = 100 * 0.0147 = 1.47
     // total = 31.47
@@ -296,10 +323,13 @@ describe("EXCH-06 virtual balance", () => {
   });
 
   it("after placing order costing ~51, getBalance() returns ~949", async () => {
+    // Use tick0 so feed returns exactly 0.5 for predictable math
+    const tick0 = scenario.prices[0].timestamp;
     const client = makeClient({
       platform: "polymarket",
       virtualBalance: 1000,
       takerFeeRate: 0.02,
+      simulatedNow: () => tick0,
     });
     await client.placeOrder({
       marketId: "test-market",
@@ -309,7 +339,7 @@ describe("EXCH-06 virtual balance", () => {
       size: 100,
     });
     const balance = await client.getBalance();
-    // cost = 50 + fee = 1 = 51 total
+    // fill price = 0.5, cost = 50, fee = 1, total = 51
     expect(balance).toBeCloseTo(949, 4);
   });
 
