@@ -227,7 +227,10 @@ export class KalshiClient implements ExchangeClient {
     const key = await this.getSigningKey();
     // Strip query params for signing
     const pathNoQuery = path.split("?")[0];
-    const message = timestampMs + method.toUpperCase() + pathNoQuery;
+    // Kalshi requires the full URL path (including baseUrl pathname prefix)
+    // e.g. /trade-api/v2 + /portfolio/orders = /trade-api/v2/portfolio/orders
+    const basePathPrefix = new URL(this.baseUrl).pathname;
+    const message = timestampMs + method.toUpperCase() + basePathPrefix + pathNoQuery;
 
     const signature = await crypto.subtle.sign(
       { name: "RSA-PSS", saltLength: 32 }, // SHA-256 digest length
