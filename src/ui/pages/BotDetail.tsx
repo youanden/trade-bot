@@ -445,7 +445,13 @@ export function BotDetail() {
                 )}
               >
                 <span className="shrink-0 text-muted-foreground">
-                  {new Date(log.createdAt).toLocaleTimeString()}
+                  {(() => {
+                    const d = new Date(log.createdAt);
+                    const isToday = d.toDateString() === new Date().toDateString();
+                    return isToday
+                      ? d.toLocaleTimeString()
+                      : d.toLocaleDateString(undefined, { month: "short", day: "numeric" }) + " " + d.toLocaleTimeString();
+                  })()}
                 </span>
                 <span
                   className={cn(
