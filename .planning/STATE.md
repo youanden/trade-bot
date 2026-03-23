@@ -129,9 +129,10 @@ No pending todos.
 | 260322-uyr | Implement Kalshi leaderboard copy trading using crowd-wisdom (volume-ranked markets + price-skew signals) | 2026-03-22 | 752a1d3 | [260322-uyr-implement-kalshi-leaderboard-copy-tradin](./quick/260322-uyr-implement-kalshi-leaderboard-copy-tradin/) |
 | 260322-v57 | Add markets seed endpoint and seed dev data button in Markets UI | 2026-03-22 | 644e09b | [260322-v57-add-markets-seed-endpoint-and-seed-dev-d](./quick/260322-v57-add-markets-seed-endpoint-and-seed-dev-d/) |
 | 260322-vb9 | Add realtime price streaming via SSE for Markets page | 2026-03-22 | cff996f | [260322-vb9-add-realtime-price-streaming-via-sse-for](./quick/260322-vb9-add-realtime-price-streaming-via-sse-for/) |
+| 260322-vu7 | Fix market-maker to discover markets dynamically and guard Kalshi orderbook crash | 2026-03-22 | 017e48d | [260322-vu7-fix-market-maker-to-discover-markets-dyn](./quick/260322-vu7-fix-market-maker-to-discover-markets-dyn/) |
 
 ## Session Continuity
 
 Last activity: 2026-03-22
-Stopped at: Completed quick task 260322-vb9
+Stopped at: Completed quick task 260322-vu7
 Resume file: None
