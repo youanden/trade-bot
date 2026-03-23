@@ -6,6 +6,7 @@ import { Positions } from "./pages/Positions";
 import { Trades } from "./pages/Trades";
 import { Markets } from "./pages/Markets";
 import { Analytics } from "./pages/Analytics";
+import { PromptTester } from "./pages/PromptTester";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -47,6 +48,7 @@ export function App() {
                 <NavItem to="/trades">Trades</NavItem>
                 <NavItem to="/markets">Markets</NavItem>
                 <NavItem to="/analytics">Analytics</NavItem>
+                <NavItem to="/prompt-tester">Prompt Tester</NavItem>
               </nav>
             </div>
           </header>
@@ -60,6 +62,7 @@ export function App() {
               <Route path="/trades" element={<Trades />} />
               <Route path="/markets" element={<Markets />} />
               <Route path="/analytics" element={<Analytics />} />
+              <Route path="/prompt-tester" element={<PromptTester />} />
             </Routes>
           </main>
         </div>

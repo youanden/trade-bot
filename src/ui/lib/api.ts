@@ -60,4 +60,8 @@ export const api = {
 
   // Health
   health: () => request<{ status: string; ts: string }>("/health"),
+
+  // Prompt testing
+  testPrompt: (data: { marketIds: number[]; prompt: string; aiModel?: string }) =>
+    request<any[]>("/prompt-test", { method: "POST", body: JSON.stringify(data) }),
 };

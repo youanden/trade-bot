@@ -8,6 +8,7 @@ import tradesRoutes from "./api/routes/trades";
 import marketsRoutes from "./api/routes/markets";
 import positionsRoutes from "./api/routes/positions";
 import analyticsRoutes from "./api/routes/analytics";
+import promptTestRoutes from "./api/routes/promptTest";
 import { listStrategies } from "./bots/registry";
 
 // Re-export the Durable Object class so Wrangler can find it
@@ -36,6 +37,7 @@ app.route("/api/trades", tradesRoutes);
 app.route("/api/markets", marketsRoutes);
 app.route("/api/positions", positionsRoutes);
 app.route("/api/analytics", analyticsRoutes);
+app.route("/api/prompt-test", promptTestRoutes);
 
 // ── Health check ──
 app.get("/api/health", (c) => {
