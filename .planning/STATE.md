@@ -125,9 +125,10 @@ No pending todos.
 | 260322-jcc | update phase 09 docs with Discord webhook decisions and requirements | 2026-03-22 | 480ebcb | [260322-jcc-update-phase-09-docs-to-use-discord-webh](./quick/260322-jcc-update-phase-09-docs-to-use-discord-webh/) |
 | 260322-u8m | add platform selector and JSON config textarea to bot creation form in Dashboard.tsx | 2026-03-22 | b46ab87 | [260322-u8m-add-platform-and-config-fields-to-bot-cr](./quick/260322-u8m-add-platform-and-config-fields-to-bot-cr/) |
 | 260322-uo2 | Build market ID interface in the dashboard for adding/removing market IDs from bot config | 2026-03-23 | 5a2505e | [260322-uo2-build-market-id-interface-in-the-dashboa](./quick/260322-uo2-build-market-id-interface-in-the-dashboa/) |
+| 260322-uyr | Implement Kalshi leaderboard copy trading using crowd-wisdom (volume-ranked markets + price-skew signals) | 2026-03-22 | 752a1d3 | [260322-uyr-implement-kalshi-leaderboard-copy-tradin](./quick/260322-uyr-implement-kalshi-leaderboard-copy-tradin/) |
 
 ## Session Continuity
 
-Last activity: 2026-03-23
-Stopped at: Completed quick task 260322-uo2
+Last activity: 2026-03-22
+Stopped at: Completed quick task 260322-uyr
 Resume file: None
