@@ -37,6 +37,8 @@ export const api = {
     }),
   forceTick: (id: number) =>
     request<{ ok: boolean }>(`/bots/${id}/tick`, { method: "POST" }),
+  getBotLogs: (id: number, limit?: number) =>
+    request<any[]>(`/bots/${id}/logs${limit ? `?limit=${limit}` : ""}`),
 
   // Trades
   listTrades: (limit?: number) =>

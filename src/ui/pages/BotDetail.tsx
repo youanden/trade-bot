@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useBot, useBotStatus, useStartBot, useStopBot, useUpdateBotConfig, useForceTick } from "../hooks/useBots";
+import { useBot, useBotStatus, useStartBot, useStopBot, useUpdateBotConfig, useForceTick, useBotLogs } from "../hooks/useBots";
 import { useTrades } from "../hooks/useTrades";
 import { cn } from "../lib/utils";
 
@@ -38,6 +38,7 @@ export function BotDetail() {
   const stopBot = useStopBot();
   const updateConfig = useUpdateBotConfig(botId);
   const forceTick = useForceTick(botId);
+  const { data: logs } = useBotLogs(botId);
 
   const [formState, setFormState] = useState<ConfigFormState>(() =>
     configToFormState(bot?.config)
@@ -163,6 +164,15 @@ export function BotDetail() {
           )}
         </div>
       </div>
+
+      {bot.error_message && (
+        <div className="rounded-lg border border-red-300 bg-red-50 dark:bg-red-950/20 dark:border-red-800 p-4">
+          <p className="text-sm font-medium text-red-800 dark:text-red-400">Persistent Error</p>
+          <p className="text-sm text-red-700 dark:text-red-300 mt-1 font-mono break-all">
+            {bot.error_message}
+          </p>
+        </div>
+      )}
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Status card */}
@@ -416,6 +426,54 @@ export function BotDetail() {
           </div>
         ) : (
           <div className="text-sm text-muted-foreground">No trades yet.</div>
+        )}
+      </div>
+
+      {/* Recent Logs */}
+      <div className="rounded-lg border bg-card p-4 space-y-3">
+        <h2 className="font-semibold">Recent Logs</h2>
+        {logs?.length ? (
+          <div className="max-h-80 overflow-y-auto space-y-1">
+            {logs.map((log: any) => (
+              <div
+                key={log.id}
+                className={cn(
+                  "flex items-start gap-3 py-1.5 px-2 rounded text-xs font-mono",
+                  log.action.includes("error")
+                    ? "bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400"
+                    : "text-muted-foreground"
+                )}
+              >
+                <span className="shrink-0 text-muted-foreground">
+                  {new Date(log.created_at).toLocaleTimeString()}
+                </span>
+                <span
+                  className={cn(
+                    "shrink-0 w-28",
+                    log.action.includes("error") &&
+                      "text-red-600 dark:text-red-400 font-semibold"
+                  )}
+                >
+                  {log.action}
+                </span>
+                <span
+                  className="truncate"
+                  title={JSON.stringify(log.details)}
+                >
+                  {log.details && Object.keys(log.details).length > 0
+                    ? Object.entries(log.details)
+                        .map(
+                          ([k, v]) =>
+                            `${k}=${typeof v === "string" ? v : JSON.stringify(v)}`
+                        )
+                        .join(" ")
+                    : ""}
+                </span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-sm text-muted-foreground">No logs yet.</div>
         )}
       </div>
     </div>

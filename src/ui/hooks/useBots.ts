@@ -57,3 +57,11 @@ export function useForceTick(id: number) {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["bots", id, "status"] }),
   });
 }
+
+export function useBotLogs(id: number) {
+  return useQuery({
+    queryKey: ["bots", id, "logs"],
+    queryFn: () => api.getBotLogs(id, 50),
+    refetchInterval: 5000,
+  });
+}
