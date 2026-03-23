@@ -136,9 +136,10 @@ No pending todos.
 | 260323-cut | Add recent logs panel to BotDetail page with tick-level audit logging and error banner | 2026-03-23 | 34eba4e | [260323-cut-add-recent-logs-panel-to-botdetail-page-](./quick/260323-cut-add-recent-logs-panel-to-botdetail-page-/) |
 | 260323-dcu | Fix Kalshi INCORRECT_API_KEY_SIGNATURE by prepending /trade-api/v2 path prefix to signed message | 2026-03-23 | 0a595f7 | [260323-dcu-fix-kalshi-incorrect-api-key-signature-s](./quick/260323-dcu-fix-kalshi-incorrect-api-key-signature-s/) |
 | 260323-dho | Build llm-picker bot strategy with configurable prompt template and Prompt Tester UI | 2026-03-23 | 4919742 | [260323-dho-build-llm-picker-bot-strategy-and-prompt](./quick/260323-dho-build-llm-picker-bot-strategy-and-prompt/) |
+| 260323-ex0 | Route AI calls through Cloudflare AI Gateway using ai-gateway-provider and ai packages | 2026-03-23 | — | [260323-ex0-route-ai-calls-through-cloudflare-ai-gat](./quick/260323-ex0-route-ai-calls-through-cloudflare-ai-gat/) |
 
 ## Session Continuity
 
-Last activity: 2026-03-23 - Completed quick task 260323-dho: Build LLM picker bot strategy and prompt test UI
+Last activity: 2026-03-23 - Completed quick task 260323-ex0: Route AI calls through Cloudflare AI Gateway
 Stopped at: Completed quick task 260323-dho
 Resume file: None

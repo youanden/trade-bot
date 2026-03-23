@@ -7,6 +7,9 @@ import type { ExchangeClient, MarketInfo } from "../../core/exchanges/types";
 import type { BaseBotDO } from "../base";
 import type { LlmPickerConfig } from "./config";
 import { Logger } from "../../core/utils/logger";
+import { createAiGateway } from "ai-gateway-provider";
+import { createUnified } from "ai-gateway-provider/providers/unified";
+import { generateText } from "ai";
 
 const log = new Logger({ strategy: "llm-picker" });
 
@@ -35,9 +38,9 @@ export async function llmPickerTick(
     return;
   }
 
-  if (!env.AI) {
-    log.error("tick:no-ai-binding", {
-      hint: "Add [ai] binding to wrangler.toml",
+  if (!env.CF_AIG_TOKEN) {
+    log.error("tick:no-aig-token", {
+      hint: "Set CF_AIG_TOKEN secret for Cloudflare AI Gateway",
     });
     return;
   }
@@ -116,8 +119,15 @@ async function evaluateMarket(
     endDate: market.endDate ?? "",
   });
 
-  // Call Workers AI
-  const aiResponse: any = await env.AI!.run(config.aiModel as any, {
+  // Call AI via AI Gateway
+  const aigateway = createAiGateway({
+    accountId: "2883160c80d41a3c439a131bf0378c6d",
+    gateway: "default",
+    apiKey: env.CF_AIG_TOKEN ?? "",
+  });
+  const unified = createUnified();
+  const { text: responseText } = await generateText({
+    model: aigateway(unified(`workers-ai/${config.aiModel}`)),
     messages: [
       {
         role: "system",
@@ -127,11 +137,6 @@ async function evaluateMarket(
       { role: "user", content: interpolatedPrompt },
     ],
   });
-
-  const responseText =
-    typeof aiResponse === "string"
-      ? aiResponse
-      : aiResponse?.response ?? aiResponse?.result ?? "";
 
   const parsed = parsePickerResponse(responseText);
 

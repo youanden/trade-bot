@@ -34,7 +34,7 @@ export const DEFAULT_LLM_PICKER_CONFIG: Partial<LlmPickerConfig> = {
   botType: "llm-picker",
   tickIntervalMs: 300_000, // 5 min — LLM calls are slow/expensive
   platform: "polymarket",
-  aiModel: "@cf/meta/llama-3-8b-instruct",
+  aiModel: "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
   promptTemplate: DEFAULT_PROMPT_TEMPLATE,
   maxPositionSize: 100,
   maxMarkets: 5,
