@@ -12,6 +12,10 @@ export function Markets() {
     mutationFn: () => api.syncMarkets(),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["markets"] }),
   });
+  const seed = useMutation({
+    mutationFn: () => api.seedMarkets(),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["markets"] }),
+  });
 
   const filtered = search
     ? markets?.filter((m: any) =>
@@ -37,14 +41,35 @@ export function Markets() {
           >
             {sync.isPending ? "Syncing..." : "Sync Markets"}
           </button>
+          {sync.data && "error" in sync.data && sync.data.error && (
+            <span className="text-xs text-destructive">{sync.data.error}</span>
+          )}
         </div>
       </div>
 
       {isLoading ? (
         <div className="text-muted-foreground">Loading...</div>
       ) : !filtered?.length ? (
-        <div className="text-muted-foreground">
-          {search ? "No markets match your search." : "No markets synced yet."}
+        <div className="text-muted-foreground flex flex-col items-start">
+          {search ? (
+            "No markets match your search."
+          ) : (
+            <>
+              <span>No markets synced yet.</span>
+              <button
+                className="rounded-md bg-secondary px-3 py-2 text-sm text-secondary-foreground hover:bg-secondary/90 disabled:opacity-50 mt-2"
+                disabled={seed.isPending}
+                onClick={() => seed.mutate()}
+              >
+                {seed.isPending ? "Seeding..." : "Seed Dev Data"}
+              </button>
+              {seed.data && seed.data.seeded > 0 && (
+                <span className="text-xs text-muted-foreground mt-1">
+                  Seeded {seed.data.seeded} markets
+                </span>
+              )}
+            </>
+          )}
         </div>
       ) : (
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
