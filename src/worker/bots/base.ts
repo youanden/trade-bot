@@ -150,6 +150,30 @@ export abstract class BaseBotDO extends DurableObject<Env> {
     await this.ctx.storage.put("config", this.config);
     await this.audit("config-update", partial);
     this.log.info("bot:config-updated");
+
+    // Reschedule alarm immediately when tick interval changes and bot is running
+    if (this.running && partial.tickIntervalMs !== undefined) {
+      await this.ctx.storage.deleteAlarm();
+      await this.ctx.storage.setAlarm(Date.now() + this.config.tickIntervalMs);
+    }
+  }
+
+  async forceTick(): Promise<void> {
+    if (!this.config) throw new Error("Bot not initialized");
+
+    try {
+      this.log.debug("force-tick:start", { tickCount: this.tickCount });
+      await this.tick();
+      this.tickCount++;
+      this.lastTick = new Date().toISOString();
+      this.lastError = null;
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      this.lastError = msg;
+      this.log.error("force-tick:error", { error: msg });
+    }
+
+    await this.audit("force-tick");
   }
 
   // ── Trade Recording ──

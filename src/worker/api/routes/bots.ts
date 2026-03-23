@@ -111,6 +111,27 @@ app.post("/:id/stop", async (c) => {
   return c.json({ ok: true });
 });
 
+/** Force an immediate tick on a running bot */
+app.post("/:id/tick", async (c) => {
+  const db = createDb(c.env.DB);
+  const id = Number(c.req.param("id"));
+  const [bot] = await db
+    .select()
+    .from(botInstances)
+    .where(eq(botInstances.id, id));
+
+  if (!bot) return c.json({ error: "Not found" }, 404);
+  if (!bot.durableObjectId)
+    return c.json({ error: "No DO ID assigned" }, 400);
+
+  const doId = c.env.BOT_DO.idFromString(bot.durableObjectId);
+  const stub = c.env.BOT_DO.get(doId);
+
+  await (stub as any).forceTick();
+
+  return c.json({ ok: true });
+});
+
 /** Get bot status from DO */
 app.get("/:id/status", async (c) => {
   const db = createDb(c.env.DB);
@@ -150,6 +171,13 @@ app.patch("/:id/config", async (c) => {
     .set({ config: merged, updatedAt: new Date().toISOString() })
     .where(eq(botInstances.id, id))
     .returning();
+
+  // Forward config update to the live DO if bot is running
+  if (bot.durableObjectId && bot.status === "running") {
+    const doId = c.env.BOT_DO.idFromString(bot.durableObjectId);
+    const stub = c.env.BOT_DO.get(doId);
+    await (stub as any).updateConfig(body);
+  }
 
   return c.json(updated);
 });
