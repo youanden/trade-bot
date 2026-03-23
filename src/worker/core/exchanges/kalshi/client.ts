@@ -39,7 +39,11 @@ export class KalshiClient implements ExchangeClient {
     const searchParams = new URLSearchParams();
     if (params?.limit) searchParams.set("limit", String(params.limit));
     if (params?.cursor) searchParams.set("cursor", params.cursor);
-    if (params?.status) searchParams.set("status", params.status);
+    if (params?.status) {
+      // Kalshi API uses "open" for active markets, but response objects use "active"
+      const apiStatus = params.status === "active" ? "open" : params.status;
+      searchParams.set("status", apiStatus);
+    }
 
     const res = await this.apiFetch(`/markets?${searchParams.toString()}`);
     const data = await res.json() as any;
