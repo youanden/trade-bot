@@ -68,6 +68,7 @@ export abstract class BaseBotDO extends DurableObject<Env> {
       this.tickCount++;
       this.lastTick = new Date().toISOString();
       this.lastError = null;
+      await this.audit("tick:success", { tickCount: this.tickCount });
 
       // Update heartbeat in DB
       if (this.config.dbBotId) {
@@ -94,6 +95,7 @@ export abstract class BaseBotDO extends DurableObject<Env> {
           })
           .where(eq(botInstances.id, this.config.dbBotId));
       }
+      await this.audit("tick:error", { error: msg, tickCount: this.tickCount });
     }
 
     // Schedule next tick
@@ -167,13 +169,13 @@ export abstract class BaseBotDO extends DurableObject<Env> {
       this.tickCount++;
       this.lastTick = new Date().toISOString();
       this.lastError = null;
+      await this.audit("force-tick:success", { tickCount: this.tickCount });
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       this.lastError = msg;
       this.log.error("force-tick:error", { error: msg });
+      await this.audit("force-tick:error", { error: msg, tickCount: this.tickCount });
     }
-
-    await this.audit("force-tick");
   }
 
   // ── Trade Recording ──

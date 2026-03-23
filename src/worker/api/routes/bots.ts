@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { createDb } from "../../core/db/client";
-import { botInstances } from "../../core/db/schema";
-import { eq } from "drizzle-orm";
+import { botInstances, auditLog } from "../../core/db/schema";
+import { eq, desc } from "drizzle-orm";
 import type { BotConfig } from "../../bots/base";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -180,6 +180,22 @@ app.patch("/:id/config", async (c) => {
   }
 
   return c.json(updated);
+});
+
+/** Get recent logs for a bot */
+app.get("/:id/logs", async (c) => {
+  const db = createDb(c.env.DB);
+  const id = Number(c.req.param("id"));
+  const limit = Math.min(Number(c.req.query("limit") ?? 50), 200);
+
+  const logs = await db
+    .select()
+    .from(auditLog)
+    .where(eq(auditLog.botInstanceId, id))
+    .orderBy(desc(auditLog.createdAt))
+    .limit(limit);
+
+  return c.json(logs);
 });
 
 /** Delete a bot */
