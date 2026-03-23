@@ -26,6 +26,10 @@ export interface CopyTraderConfig extends BotConfig {
   leaderboardTimePeriod?: "DAY" | "WEEK" | "MONTH" | "ALL";
   /** ISO-8601 timestamp of last leaderboard refresh (internal, stored in DO) */
   _lastLeaderboardRefresh?: string;
+  /** Kalshi crowd-wisdom: minimum volume threshold for discovered markets. Default: 1000 */
+  kalshiMinVolume?: number;
+  /** Kalshi crowd-wisdom: optional category filter (e.g. "politics", "economics") */
+  kalshiCategory?: string;
 }
 
 export const DEFAULT_COPY_TRADER_CONFIG: Partial<CopyTraderConfig> = {
