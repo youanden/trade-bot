@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 08-02-PLAN.md
-last_updated: "2026-03-22T18:20:06.322Z"
-last_activity: 2026-03-22
+stopped_at: Completed 09-01-PLAN.md
+last_updated: "2026-03-23T00:59:21.933Z"
+last_activity: 2026-03-23
 progress:
   total_phases: 9
   completed_phases: 5
   total_plans: 14
-  completed_plans: 11
+  completed_plans: 13
 ---
 
 # Project State
@@ -20,12 +20,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-21)
 
 **Core value:** Confidently evaluate and compare all 8 trading strategies against realistic market scenarios before risking real capital.
-**Current focus:** Phase 08 — implement-actionable-improvements-from-polymarket-ecosystem-analysis
+**Current focus:** Phase 09 — add-discord-trade-notifications-and-leaderboard-copy-strategy
 
 ## Current Position
 
-Phase: 09
-Plan: Not started
+Phase: 09 (add-discord-trade-notifications-and-leaderboard-copy-strategy) — EXECUTING
+Plan: 3 of 3
 
 ## Performance Metrics
 
@@ -58,6 +58,8 @@ Plan: Not started
 | Phase 04-backtest-engine P03 | 5 | 1 tasks | 1 files |
 | Phase 08 P01 | 2 | 2 tasks | 4 files |
 | Phase 08 P02 | 5 | 2 tasks | 7 files |
+| Phase 09 P02 | 80s | 2 tasks | 3 files |
+| Phase 09 P01 | 2 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -92,6 +94,10 @@ Recent decisions affecting current work:
 - [Phase 08]: ClobApiError placed in separate errors.ts file (not types.ts) following module-per-concern convention
 - [Phase 08]: withRetry does not retry non-retryable ClobApiErrors — immediate throw prevents wasted retries on permanent failures
 - [Phase 08]: placeOrder and cancelOrder not wrapped with withRetry — non-idempotent operations must never auto-retry to avoid duplicate orders/cancels
+- [Phase 09]: proxyWallet normalized to lowercase in leaderboard.ts to prevent address casing mismatch
+- [Phase 09]: fetchLeaderboard uses native fetch only — zero npm dependencies, aligns with D-02
+- [Phase 09]: Leaderboard config fields all optional — backward-compatible CopyTraderConfig extension
+- [Phase 09]: Use console.warn for non-ok Discord responses (not Logger) to keep discord.ts a zero-dependency pure utility
 
 ### Pending Todos
 
@@ -117,6 +123,6 @@ No pending todos.
 
 ## Session Continuity
 
-Last activity: 2026-03-22
-Stopped at: Completed 08-02-PLAN.md
+Last activity: 2026-03-23
+Stopped at: Completed 09-01-PLAN.md
 Resume file: None
