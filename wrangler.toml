@@ -3,6 +3,7 @@ main = "src/worker/index.ts"
 compatibility_date = "2025-03-01"
 compatibility_flags = ["nodejs_compat"]
 
+
 [assets]
 directory = "./dist/ui"
 binding = "ASSETS"
@@ -25,6 +26,7 @@ migrations_dir = "drizzle"
 
 [ai]
 binding = "AI"
+remote = true
 
 [vars]
 ENVIRONMENT = "development"
