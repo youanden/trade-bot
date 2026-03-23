@@ -18,4 +18,5 @@ interface Env {
   AUTH_TOKEN?: string;
   DISCORD_WEBHOOK_URL?: string;
   AI?: Ai;
+  CF_AIG_TOKEN?: string;
 }
