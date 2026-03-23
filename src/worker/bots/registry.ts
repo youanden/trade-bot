@@ -11,6 +11,7 @@ import { weatherArbTick } from "./weather-arb/strategy";
 import { marketMakerTick } from "./market-maker/strategy";
 import { ladderStraddleTick } from "./ladder-straddle/strategy";
 import { deepResearchTick } from "./deep-research/strategy";
+import { llmPickerTick } from "./llm-picker/strategy";
 
 export type StrategyTickFn = (bot: BaseBotDO, env: Env) => Promise<void>;
 
@@ -25,6 +26,7 @@ strategies.set("weather-arb", weatherArbTick);
 strategies.set("market-maker", marketMakerTick);
 strategies.set("ladder-straddle", ladderStraddleTick);
 strategies.set("deep-research", deepResearchTick);
+strategies.set("llm-picker", llmPickerTick);
 
 export function registerStrategy(botType: string, tickFn: StrategyTickFn) {
   strategies.set(botType, tickFn);
