@@ -133,9 +133,10 @@ No pending todos.
 | 260322-wb2 | Fix KalshiClient.getMarkets to map status "active" to "open" query param | 2026-03-22 | ef54151 | [260322-wb2-fix-kalshi-getmarkets-status-filter-map-](./quick/260322-wb2-fix-kalshi-getmarkets-status-filter-map-/) |
 | 260323-cdq | Add strategy config edit form to BotDetail replacing read-only JSON and Market IDs sections | 2026-03-23 | e20c83e | [260323-cdq-add-strategy-config-edit-form-to-botdeta](./quick/260323-cdq-add-strategy-config-edit-form-to-botdeta/) |
 | 260323-cqi | Add tick interval control and manual tick trigger to BotDetail | 2026-03-23 | 3db369b | [260323-cqi-add-tick-interval-control-and-manual-tic](./quick/260323-cqi-add-tick-interval-control-and-manual-tic/) |
+| 260323-cut | Add recent logs panel to BotDetail page with tick-level audit logging and error banner | 2026-03-23 | 34eba4e | [260323-cut-add-recent-logs-panel-to-botdetail-page-](./quick/260323-cut-add-recent-logs-panel-to-botdetail-page-/) |
 
 ## Session Continuity
 
-Last activity: 2026-03-23 - Completed quick task 260323-cqi: add tick interval control and manual tick trigger
-Stopped at: Completed quick task 260323-cqi
+Last activity: 2026-03-23 - Completed quick task 260323-cut: add recent logs panel to BotDetail page
+Stopped at: Completed quick task 260323-cut
 Resume file: None
