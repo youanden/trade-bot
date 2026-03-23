@@ -43,6 +43,7 @@ export const api = {
   // Markets
   listMarkets: (limit?: number) =>
     request<any[]>(`/markets${limit ? `?limit=${limit}` : ""}`),
+  syncMarkets: () => request<{ synced: number }>("/markets/sync", { method: "POST" }),
 
   // Positions
   listPositions: () => request<any[]>("/positions"),
