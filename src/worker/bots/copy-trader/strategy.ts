@@ -8,6 +8,8 @@ import { ensureMarket } from "../../core/exchanges/helpers";
 import { notifyDiscord } from "../../core/notifications/discord";
 import type { TradeNotification } from "../../core/notifications/discord";
 import { fetchLeaderboard } from "../../core/exchanges/polymarket/leaderboard";
+import { fetchKalshiLeaderboard } from "../../core/exchanges/kalshi/leaderboard";
+import { KALSHI_URLS } from "../../core/exchanges/kalshi/types";
 import type { ExchangeClient } from "../../core/exchanges/types";
 import type { BaseBotDO, TradeRecord } from "../base";
 import type { CopyTraderConfig } from "./config";
@@ -101,6 +103,68 @@ async function maybeRefreshLeaderboard(
     return; // Not due yet
   }
 
+  const nowIso = new Date().toISOString();
+
+  if (config.platform === "kalshi") {
+    // Crowd-wisdom mode: use top markets by volume as trade signals
+    let kalshiEntries;
+    try {
+      kalshiEntries = await fetchKalshiLeaderboard({
+        limit: config.leaderboardTopN ?? 10,
+        minVolume: config.kalshiMinVolume ?? 1000,
+        category: config.kalshiCategory,
+      });
+    } catch (err) {
+      log.error("leaderboard:kalshi:fetch-failed", {
+        error: err instanceof Error ? err.message : String(err),
+      });
+      return;
+    }
+
+    for (const entry of kalshiEntries) {
+      const existing = await db
+        .select()
+        .from(trackedTraders)
+        .where(
+          and(
+            eq(trackedTraders.platform, "kalshi"),
+            eq(trackedTraders.traderId, entry.ticker)
+          )
+        )
+        .limit(1);
+
+      if (existing.length > 0) {
+        await db
+          .update(trackedTraders)
+          .set({ alias: entry.title, totalPnl: entry.volume, isActive: true })
+          .where(eq(trackedTraders.id, existing[0].id));
+      } else {
+        await db.insert(trackedTraders).values({
+          platform: "kalshi",
+          traderId: entry.ticker,
+          alias: entry.title,
+          totalPnl: entry.volume,
+          winRate: null,
+          isActive: true,
+          createdAt: nowIso,
+        });
+      }
+    }
+
+    config.traderIds = kalshiEntries.map((e) => e.ticker);
+    config._lastLeaderboardRefresh = new Date().toISOString();
+
+    if (typeof (bot as any).updateConfig === "function") {
+      await (bot as any).updateConfig(config);
+    }
+
+    log.info("leaderboard:kalshi:refreshed", {
+      marketCount: kalshiEntries.length,
+    });
+    return;
+  }
+
+  // Polymarket leaderboard (original behavior — unchanged)
   let entries;
   try {
     entries = await fetchLeaderboard({
@@ -115,7 +179,6 @@ async function maybeRefreshLeaderboard(
     return;
   }
 
-  const nowIso = new Date().toISOString();
   for (const entry of entries) {
     // Use select-then-insert/update pattern since tracked_traders has no unique constraint
     const existing = await db
@@ -456,6 +519,22 @@ async function fetchTraderPositions(
     }));
   }
 
-  // Kalshi doesn't expose other traders' positions publicly
-  return [];
+  // Kalshi crowd-wisdom: traderId is a market ticker from the leaderboard.
+  // Fetch the market and derive a synthetic position based on price skew.
+  try {
+    const res = await fetch(
+      `${KALSHI_URLS.prod.rest}/markets/${traderId}`
+    );
+    if (!res.ok) {
+      return [];
+    }
+    const data: { market?: { last_price_dollars?: string } } =
+      await res.json();
+    const lastPrice = Number(data.market?.last_price_dollars ?? "0.50");
+    const outcome: "yes" | "no" = lastPrice > 0.5 ? "yes" : "no";
+    // Size of 1 is a signal — actual sizing is governed by sizeFraction and maxPositionSize
+    return [{ marketId: traderId, outcome, size: 1 }];
+  } catch {
+    return [];
+  }
 }
