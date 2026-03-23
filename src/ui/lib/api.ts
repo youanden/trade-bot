@@ -35,6 +35,8 @@ export const api = {
       method: "PATCH",
       body: JSON.stringify(config),
     }),
+  forceTick: (id: number) =>
+    request<{ ok: boolean }>(`/bots/${id}/tick`, { method: "POST" }),
 
   // Trades
   listTrades: (limit?: number) =>

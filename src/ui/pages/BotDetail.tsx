@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useBot, useBotStatus, useStartBot, useStopBot, useUpdateBotConfig } from "../hooks/useBots";
+import { useBot, useBotStatus, useStartBot, useStopBot, useUpdateBotConfig, useForceTick } from "../hooks/useBots";
 import { useTrades } from "../hooks/useTrades";
 import { cn } from "../lib/utils";
 
 interface ConfigFormState {
   platform: string;
+  tickIntervalMs: number;
   spreadWidth: number;
   orderSize: number;
   maxInventory: number;
@@ -17,6 +18,7 @@ interface ConfigFormState {
 function configToFormState(config: any): ConfigFormState {
   return {
     platform: config?.platform ?? "polymarket",
+    tickIntervalMs: config?.tickIntervalMs ?? 60000,
     spreadWidth: config?.spreadWidth ?? 0.04,
     orderSize: config?.orderSize ?? 50,
     maxInventory: config?.maxInventory ?? 500,
@@ -35,6 +37,7 @@ export function BotDetail() {
   const startBot = useStartBot();
   const stopBot = useStopBot();
   const updateConfig = useUpdateBotConfig(botId);
+  const forceTick = useForceTick(botId);
 
   const [formState, setFormState] = useState<ConfigFormState>(() =>
     configToFormState(bot?.config)
@@ -66,6 +69,7 @@ export function BotDetail() {
       : [];
     if (
       formState.platform !== orig.platform ||
+      formState.tickIntervalMs !== orig.tickIntervalMs ||
       formState.spreadWidth !== orig.spreadWidth ||
       formState.orderSize !== orig.orderSize ||
       formState.maxInventory !== orig.maxInventory ||
@@ -131,6 +135,15 @@ export function BotDetail() {
           </p>
         </div>
         <div className="flex gap-2">
+          {bot.status === "running" && (
+            <button
+              className="px-4 py-2 text-sm rounded-md border hover:bg-muted"
+              onClick={() => forceTick.mutate()}
+              disabled={forceTick.isPending}
+            >
+              {forceTick.isPending ? "Ticking..." : "Trigger Tick"}
+            </button>
+          )}
           {bot.status !== "running" ? (
             <button
               className="px-4 py-2 text-sm rounded-md bg-primary text-primary-foreground hover:opacity-90"
@@ -195,6 +208,20 @@ export function BotDetail() {
                 <option value="polymarket">polymarket</option>
                 <option value="kalshi">kalshi</option>
               </select>
+            </label>
+
+            <label className="block space-y-1">
+              <span className="text-sm font-medium">Tick Interval (ms)</span>
+              <input
+                type="number"
+                step="1000"
+                min="1000"
+                value={formState.tickIntervalMs}
+                onChange={(e) =>
+                  handleFieldChange("tickIntervalMs", Number(e.target.value))
+                }
+                className={inputClass}
+              />
             </label>
 
             <label className="block space-y-1">

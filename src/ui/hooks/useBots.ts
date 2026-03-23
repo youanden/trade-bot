@@ -49,3 +49,11 @@ export function useUpdateBotConfig(id: number) {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["bots", id] }),
   });
 }
+
+export function useForceTick(id: number) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: () => api.forceTick(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["bots", id, "status"] }),
+  });
+}
