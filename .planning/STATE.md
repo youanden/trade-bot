@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed quick task 260323-cdq
-last_updated: "2026-03-23T12:57:33Z"
+stopped_at: Completed quick task 260323-cqi
+last_updated: "2026-03-23T13:14:30Z"
 last_activity: 2026-03-23
 progress:
   total_phases: 9
@@ -132,9 +132,10 @@ No pending todos.
 | 260322-vu7 | Fix market-maker to discover markets dynamically and guard Kalshi orderbook crash | 2026-03-22 | 017e48d | [260322-vu7-fix-market-maker-to-discover-markets-dyn](./quick/260322-vu7-fix-market-maker-to-discover-markets-dyn/) |
 | 260322-wb2 | Fix KalshiClient.getMarkets to map status "active" to "open" query param | 2026-03-22 | ef54151 | [260322-wb2-fix-kalshi-getmarkets-status-filter-map-](./quick/260322-wb2-fix-kalshi-getmarkets-status-filter-map-/) |
 | 260323-cdq | Add strategy config edit form to BotDetail replacing read-only JSON and Market IDs sections | 2026-03-23 | e20c83e | [260323-cdq-add-strategy-config-edit-form-to-botdeta](./quick/260323-cdq-add-strategy-config-edit-form-to-botdeta/) |
+| 260323-cqi | Add tick interval control and manual tick trigger to BotDetail | 2026-03-23 | 3db369b | [260323-cqi-add-tick-interval-control-and-manual-tic](./quick/260323-cqi-add-tick-interval-control-and-manual-tic/) |
 
 ## Session Continuity
 
-Last activity: 2026-03-23 - Completed quick task 260323-cdq: add strategy config edit form to BotDetail
-Stopped at: Completed quick task 260323-cdq
+Last activity: 2026-03-23 - Completed quick task 260323-cqi: add tick interval control and manual tick trigger
+Stopped at: Completed quick task 260323-cqi
 Resume file: None
