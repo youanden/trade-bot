@@ -165,11 +165,11 @@ export function BotDetail() {
         </div>
       </div>
 
-      {bot.error_message && (
+      {bot.errorMessage && (
         <div className="rounded-lg border border-red-300 bg-red-50 dark:bg-red-950/20 dark:border-red-800 p-4">
           <p className="text-sm font-medium text-red-800 dark:text-red-400">Persistent Error</p>
           <p className="text-sm text-red-700 dark:text-red-300 mt-1 font-mono break-all">
-            {bot.error_message}
+            {bot.errorMessage}
           </p>
         </div>
       )}
@@ -445,7 +445,7 @@ export function BotDetail() {
                 )}
               >
                 <span className="shrink-0 text-muted-foreground">
-                  {new Date(log.created_at).toLocaleTimeString()}
+                  {new Date(log.createdAt).toLocaleTimeString()}
                 </span>
                 <span
                   className={cn(
