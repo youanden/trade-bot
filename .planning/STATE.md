@@ -127,9 +127,10 @@ No pending todos.
 | 260322-uo2 | Build market ID interface in the dashboard for adding/removing market IDs from bot config | 2026-03-23 | 5a2505e | [260322-uo2-build-market-id-interface-in-the-dashboa](./quick/260322-uo2-build-market-id-interface-in-the-dashboa/) |
 | 260322-v07 | Expose market data with latest prices and sync endpoint | 2026-03-22 | d3f738a | [260322-v07-expose-market-data-with-latest-prices-an](./quick/260322-v07-expose-market-data-with-latest-prices-an/) |
 | 260322-uyr | Implement Kalshi leaderboard copy trading using crowd-wisdom (volume-ranked markets + price-skew signals) | 2026-03-22 | 752a1d3 | [260322-uyr-implement-kalshi-leaderboard-copy-tradin](./quick/260322-uyr-implement-kalshi-leaderboard-copy-tradin/) |
+| 260322-v57 | Add markets seed endpoint and seed dev data button in Markets UI | 2026-03-22 | 644e09b | [260322-v57-add-markets-seed-endpoint-and-seed-dev-d](./quick/260322-v57-add-markets-seed-endpoint-and-seed-dev-d/) |
 
 ## Session Continuity
 
 Last activity: 2026-03-22
-Stopped at: Completed quick task 260322-v07
+Stopped at: Completed quick task 260322-v57
 Resume file: None
