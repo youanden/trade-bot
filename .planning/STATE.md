@@ -123,9 +123,10 @@ No pending todos.
 |---|-------------|------|--------|-----------|
 | 260322-f6e | clone polymarket-system repo and analyze/compare against our current architecture, suggesting improvements | 2026-03-22 | a0195ff | [260322-f6e-clone-polymarket-system-repo-and-analyze](./quick/260322-f6e-clone-polymarket-system-repo-and-analyze/) |
 | 260322-jcc | update phase 09 docs with Discord webhook decisions and requirements | 2026-03-22 | 480ebcb | [260322-jcc-update-phase-09-docs-to-use-discord-webh](./quick/260322-jcc-update-phase-09-docs-to-use-discord-webh/) |
+| 260322-u8m | add platform selector and JSON config textarea to bot creation form in Dashboard.tsx | 2026-03-22 | b46ab87 | [260322-u8m-add-platform-and-config-fields-to-bot-cr](./quick/260322-u8m-add-platform-and-config-fields-to-bot-cr/) |
 
 ## Session Continuity
 
-Last activity: 2026-03-23
-Stopped at: Completed 09-03-PLAN.md
+Last activity: 2026-03-22
+Stopped at: Completed quick task 260322-u8m
 Resume file: None
