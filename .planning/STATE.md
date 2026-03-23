@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed quick task 260323-dcu
-last_updated: "2026-03-23T14:00:00Z"
+stopped_at: Completed quick task 260323-dho
+last_updated: "2026-03-23T14:25:00Z"
 last_activity: 2026-03-23
 progress:
   total_phases: 9
@@ -135,6 +135,7 @@ No pending todos.
 | 260323-cqi | Add tick interval control and manual tick trigger to BotDetail | 2026-03-23 | 3db369b | [260323-cqi-add-tick-interval-control-and-manual-tic](./quick/260323-cqi-add-tick-interval-control-and-manual-tic/) |
 | 260323-cut | Add recent logs panel to BotDetail page with tick-level audit logging and error banner | 2026-03-23 | 34eba4e | [260323-cut-add-recent-logs-panel-to-botdetail-page-](./quick/260323-cut-add-recent-logs-panel-to-botdetail-page-/) |
 | 260323-dcu | Fix Kalshi INCORRECT_API_KEY_SIGNATURE by prepending /trade-api/v2 path prefix to signed message | 2026-03-23 | 0a595f7 | [260323-dcu-fix-kalshi-incorrect-api-key-signature-s](./quick/260323-dcu-fix-kalshi-incorrect-api-key-signature-s/) |
+| 260323-dho | Build llm-picker bot strategy with configurable prompt template and Prompt Tester UI | 2026-03-23 | 4919742 | [260323-dho-build-llm-picker-bot-strategy-and-prompt](./quick/260323-dho-build-llm-picker-bot-strategy-and-prompt/) |
 
 ## Session Continuity
 
