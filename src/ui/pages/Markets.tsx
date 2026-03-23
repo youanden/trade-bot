@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useMarkets } from "../hooks/useMarkets";
+import { useMarketStream } from "../hooks/useMarketStream";
 import { cn, formatCurrency, formatPercent } from "../lib/utils";
 import { api } from "../lib/api";
 
 export function Markets() {
   const [search, setSearch] = useState("");
   const { data: markets, isLoading } = useMarkets(200);
+  const priceOverrides = useMarketStream();
   const qc = useQueryClient();
   const sync = useMutation({
     mutationFn: () => api.syncMarkets(),
@@ -73,7 +75,10 @@ export function Markets() {
         </div>
       ) : (
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((m: any) => (
+          {filtered.map((m: any) => {
+            const yesPrice = priceOverrides.get(m.id)?.yesPrice ?? m.yesPrice;
+            const noPrice = priceOverrides.get(m.id)?.noPrice ?? m.noPrice;
+            return (
             <div key={m.id} className="rounded-lg border bg-card p-4 space-y-2">
               <div className="flex items-start justify-between gap-2">
                 <h3 className="text-sm font-medium leading-tight line-clamp-2">
@@ -91,14 +96,14 @@ export function Markets() {
                 </span>
               </div>
               <div className="flex gap-4 text-sm">
-                {m.yesPrice != null && (
+                {yesPrice != null && (
                   <span className="text-green-500">
-                    YES {formatPercent(m.yesPrice)}
+                    YES {formatPercent(yesPrice)}
                   </span>
                 )}
-                {m.noPrice != null && (
+                {noPrice != null && (
                   <span className="text-red-500">
-                    NO {formatPercent(m.noPrice)}
+                    NO {formatPercent(noPrice)}
                   </span>
                 )}
               </div>
@@ -118,7 +123,8 @@ export function Markets() {
                 )}
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
