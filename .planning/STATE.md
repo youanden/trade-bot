@@ -130,9 +130,10 @@ No pending todos.
 | 260322-v57 | Add markets seed endpoint and seed dev data button in Markets UI | 2026-03-22 | 644e09b | [260322-v57-add-markets-seed-endpoint-and-seed-dev-d](./quick/260322-v57-add-markets-seed-endpoint-and-seed-dev-d/) |
 | 260322-vb9 | Add realtime price streaming via SSE for Markets page | 2026-03-22 | cff996f | [260322-vb9-add-realtime-price-streaming-via-sse-for](./quick/260322-vb9-add-realtime-price-streaming-via-sse-for/) |
 | 260322-vu7 | Fix market-maker to discover markets dynamically and guard Kalshi orderbook crash | 2026-03-22 | 017e48d | [260322-vu7-fix-market-maker-to-discover-markets-dyn](./quick/260322-vu7-fix-market-maker-to-discover-markets-dyn/) |
+| 260322-wb2 | Fix KalshiClient.getMarkets to map status "active" to "open" query param | 2026-03-22 | ef54151 | [260322-wb2-fix-kalshi-getmarkets-status-filter-map-](./quick/260322-wb2-fix-kalshi-getmarkets-status-filter-map-/) |
 
 ## Session Continuity
 
-Last activity: 2026-03-23 - Completed quick task 260322-vu7: fix market-maker to discover markets dynamically and guard orderbook crash
-Stopped at: Completed quick task 260322-vu7
+Last activity: 2026-03-22 - Completed quick task 260322-wb2: fix KalshiClient.getMarkets status filter mapping
+Stopped at: Completed quick task 260322-wb2
 Resume file: None
