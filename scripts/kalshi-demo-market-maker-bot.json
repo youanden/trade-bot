@@ -1,0 +1,13 @@
+{
+  "botType": "market-maker",
+  "name": "Kalshi demo market maker",
+  "config": {
+    "platform": "kalshi",
+    "marketIds": ["REPLACE_WITH_KALSHI_TICKER"],
+    "tickIntervalMs": 10000,
+    "spreadWidth": 0.04,
+    "orderSize": 10,
+    "maxInventory": 100,
+    "levels": 2
+  }
+}

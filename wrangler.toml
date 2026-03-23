@@ -1,0 +1,32 @@
+name = "trade-bot"
+main = "src/worker/index.ts"
+compatibility_date = "2025-03-01"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "./dist/ui"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+
+[durable_objects]
+bindings = [
+  { name = "BOT_DO", class_name = "BotDO" }
+]
+
+[[migrations]]
+tag = "v1"
+new_classes = ["BotDO"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "trade-bot-db"
+database_id = "55cb1d50-631d-4152-bd57-7c92037cf5bd"
+migrations_dir = "drizzle"
+
+[ai]
+binding = "AI"
+
+[vars]
+ENVIRONMENT = "development"
+# Use Kalshi demo Trade API (set to "prod" for production)
+KALSHI_ENVIRONMENT = "demo"

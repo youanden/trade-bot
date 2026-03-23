@@ -4,7 +4,12 @@ import { SimExchangeClient } from "../../src/worker/core/simulation/sim-client";
 import type { SimClientConfig } from "../../src/worker/core/simulation/sim-client";
 import { PriceFeed } from "../../src/worker/core/simulation/feed";
 import { generateScenario } from "../../src/worker/core/simulation/generator";
-import { createExchangeClient } from "../../src/worker/core/exchanges/factory";
+import {
+  createExchangeClient,
+  resolveKalshiEnvironment,
+  resolveKalshiPrivateKeyPem,
+} from "../../src/worker/core/exchanges/factory";
+import { KALSHI_URLS } from "../../src/worker/core/exchanges/kalshi/types";
 
 // Shared scenario used across most tests
 const scenario = generateScenario({ type: "flat", seed: 42, ticks: 10 });
@@ -381,5 +386,40 @@ describe("EXCH-07 factory extension", () => {
   it("createExchangeClient without simFeed throws on missing credentials (existing behavior)", () => {
     expect(() => createExchangeClient({} as Env, "polymarket")).toThrow("Missing POLYMARKET_PRIVATE_KEY");
     expect(() => createExchangeClient({} as Env, "kalshi")).toThrow("Missing KALSHI_API_KEY");
+  });
+
+  it("resolveKalshiPrivateKeyPem accepts KALSHI_PRIVATE_KEY when KALSHI_API_SECRET absent", () => {
+    const pem = "-----BEGIN PRIVATE KEY-----\nabc\n-----END PRIVATE KEY-----";
+    expect(
+      resolveKalshiPrivateKeyPem({
+        KALSHI_PRIVATE_KEY: pem,
+      } as Env)
+    ).toBe(pem);
+  });
+
+  it("resolveKalshiEnvironment maps demo to demo Trade API host", () => {
+    expect(resolveKalshiEnvironment({ KALSHI_ENVIRONMENT: "demo" } as Env)).toBe(
+      "demo"
+    );
+    expect(
+      KALSHI_URLS[resolveKalshiEnvironment({ KALSHI_ENVIRONMENT: "demo" } as Env)]
+        .rest
+    ).toBe("https://demo-api.kalshi.co/trade-api/v2");
+    expect(resolveKalshiEnvironment({} as Env)).toBe("prod");
+  });
+
+  it("createExchangeClient kalshi uses PEM from KALSHI_PRIVATE_KEY", () => {
+    const pem = `-----BEGIN PRIVATE KEY-----
+MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC7VJTUt9Us8cKB
+-----END PRIVATE KEY-----`;
+    const client = createExchangeClient(
+      {
+        KALSHI_API_KEY: "key-id",
+        KALSHI_PRIVATE_KEY: pem,
+        KALSHI_ENVIRONMENT: "demo",
+      } as Env,
+      "kalshi"
+    );
+    expect(client.platform).toBe("kalshi");
   });
 });

@@ -7,6 +7,7 @@ import type { Hex } from "viem";
 import type { ExchangeClient } from "./types";
 import { PolymarketClient } from "./polymarket/client";
 import { KalshiClient } from "./kalshi/client";
+import type { KalshiConfig } from "./kalshi/types";
 import type { PriceFeed } from "../simulation/feed";
 import type { SimClientConfig } from "../simulation/sim-client";
 import { SimExchangeClient } from "../simulation/sim-client";
@@ -65,16 +66,36 @@ function createPolymarketClient(env: Env): PolymarketClient {
   });
 }
 
+/**
+ * Resolves Kalshi RSA PEM from env (secret name varies by deployment).
+ */
+export function resolveKalshiPrivateKeyPem(env: Env): string {
+  const pem = env.KALSHI_API_SECRET ?? env.KALSHI_PRIVATE_KEY;
+  if (!pem) {
+    throw new Error("Missing KALSHI_API_SECRET or KALSHI_PRIVATE_KEY");
+  }
+  return pem;
+}
+
+/**
+ * Kalshi Trade API environment (demo vs production hosts).
+ */
+export function resolveKalshiEnvironment(env: Env): "demo" | "prod" {
+  const v = env.KALSHI_ENVIRONMENT?.toLowerCase();
+  if (v === "demo") return "demo";
+  return "prod";
+}
+
 function createKalshiClient(env: Env): KalshiClient {
   if (!env.KALSHI_API_KEY) {
     throw new Error("Missing KALSHI_API_KEY");
   }
-  if (!env.KALSHI_API_SECRET) {
-    throw new Error("Missing KALSHI_API_SECRET");
-  }
 
-  return new KalshiClient({
+  const config: KalshiConfig = {
     apiKeyId: env.KALSHI_API_KEY,
-    privateKeyPem: env.KALSHI_API_SECRET,
-  });
+    privateKeyPem: resolveKalshiPrivateKeyPem(env),
+    environment: resolveKalshiEnvironment(env),
+  };
+
+  return new KalshiClient(config);
 }
