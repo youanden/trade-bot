@@ -140,6 +140,90 @@ app.post("/seed", async (c) => {
   return c.json({ seeded: newMarkets.length });
 });
 
+/** Server-Sent Events stream of live price ticks (random walk simulation) */
+app.get("/stream", async (c) => {
+  const db = createDb(c.env.DB);
+
+  // 1. Query active markets
+  const activeMarkets = await db
+    .select()
+    .from(markets)
+    .where(eq(markets.status, "active"))
+    .limit(50);
+
+  // 2. Query all prices, build latestByMarket map
+  const allPrices = await db.select().from(prices);
+  const latestByMarket = new Map<number, typeof prices.$inferSelect>();
+  for (const row of allPrices) {
+    const existing = latestByMarket.get(row.marketId);
+    if (!existing || row.timestamp > existing.timestamp) {
+      latestByMarket.set(row.marketId, row);
+    }
+  }
+
+  // 3. Build priceState map: marketId -> current yesPrice
+  const priceState = new Map<number, number>();
+  for (const m of activeMarkets) {
+    const p = latestByMarket.get(m.id);
+    priceState.set(m.id, p?.yesPrice ?? 0.5);
+  }
+
+  // 4. Create ReadableStream
+  const stream = new ReadableStream({
+    start(controller) {
+      const enc = new TextEncoder();
+
+      function send(event: string, data: unknown) {
+        controller.enqueue(
+          enc.encode(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`)
+        );
+      }
+
+      // Send initial snapshot
+      const snapshot = activeMarkets.map((m) => {
+        const yesPrice = priceState.get(m.id) ?? 0.5;
+        return {
+          id: m.id,
+          yesPrice,
+          noPrice: +(1 - yesPrice).toFixed(4),
+        };
+      });
+      send("snapshot", snapshot);
+
+      // Send tick events every 2 seconds
+      const tickInterval = setInterval(() => {
+        if (activeMarkets.length === 0) return;
+        const m = activeMarkets[Math.floor(Math.random() * activeMarkets.length)];
+        const prev = priceState.get(m.id) ?? 0.5;
+        const delta = (Math.random() - 0.5) * 0.04;
+        const next = Math.min(0.99, Math.max(0.01, prev + delta));
+        priceState.set(m.id, next);
+        send("tick", {
+          id: m.id,
+          yesPrice: +next.toFixed(4),
+          noPrice: +(1 - next).toFixed(4),
+        });
+      }, 2000);
+
+      // Auto-close after 10 minutes
+      setTimeout(() => {
+        clearInterval(tickInterval);
+        controller.close();
+      }, 600_000);
+    },
+  });
+
+  // 5. Return SSE response (bypass Hono c.json)
+  return new Response(stream, {
+    headers: {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      "Connection": "keep-alive",
+      "X-Accel-Buffering": "no",
+    },
+  });
+});
+
 /** Get single market */
 app.get("/:id", async (c) => {
   const db = createDb(c.env.DB);
