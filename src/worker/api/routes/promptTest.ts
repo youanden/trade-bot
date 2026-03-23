@@ -3,8 +3,14 @@ import { createDb } from "../../core/db/client";
 import { markets, prices } from "../../core/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { interpolatePrompt, parsePickerResponse } from "../../bots/llm-picker/strategy";
+import { Logger } from "../../core/utils/logger";
+import { createAiGateway } from "ai-gateway-provider";
+import { createUnified } from "ai-gateway-provider/providers/unified";
+import { generateText } from "ai";
 
-const DEFAULT_AI_MODEL = "@cf/meta/llama-3-8b-instruct";
+const log = new Logger({ module: "prompt-test" });
+
+const DEFAULT_AI_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -15,8 +21,8 @@ const app = new Hono<{ Bindings: Env }>();
  * Returns: Array of per-market results with interpolated prompt, raw response, and parsed output.
  */
 app.post("/", async (c) => {
-  if (!c.env.AI) {
-    return c.json({ error: "AI binding not configured" }, 400);
+  if (!c.env.CF_AIG_TOKEN) {
+    return c.json({ error: "CF_AIG_TOKEN not configured" }, 400);
   }
 
   let body: { marketIds?: unknown; prompt?: unknown; aiModel?: unknown };
@@ -87,10 +93,18 @@ app.post("/", async (c) => {
       endDate: market.endDate ?? "",
     });
 
-    // 4. Call Workers AI
+    // 4. Call AI via AI Gateway
     let responseText = "";
     try {
-      const aiResponse: any = await c.env.AI.run(model as any, {
+      log.info("calling AI", { model, marketId, promptLength: interpolated.length });
+      const aigateway = createAiGateway({
+        accountId: "2883160c80d41a3c439a131bf0378c6d",
+        gateway: "default",
+        apiKey: c.env.CF_AIG_TOKEN ?? "",
+      });
+      const unified = createUnified();
+      const { text: aiText } = await generateText({
+        model: aigateway(unified(`workers-ai/${model}`)),
         messages: [
           {
             role: "system",
@@ -101,12 +115,12 @@ app.post("/", async (c) => {
         ],
       });
 
-      responseText =
-        typeof aiResponse === "string"
-          ? aiResponse
-          : aiResponse?.response ?? aiResponse?.result ?? "";
+      log.info("AI response received", { model, marketId });
+      responseText = aiText;
     } catch (err) {
-      responseText = `Error: ${err instanceof Error ? err.message : String(err)}`;
+      const msg = err instanceof Error ? err.message : String(err);
+      log.error("AI call failed", { model, marketId, error: msg, err });
+      responseText = `Error: ${msg}`;
     }
 
     // 5. Parse response

@@ -50,10 +50,37 @@ const PRESETS = [
 
 const PLACEHOLDERS = "{{title}}, {{description}}, {{yesPrice}}, {{noPrice}}, {{category}}, {{endDate}}";
 
+const CF_MODELS: { label: string; value: string; group: string }[] = [
+  // Fast / small
+  { group: "Fast", label: "Llama 3.1 8B Instruct (fast)", value: "@cf/meta/llama-3.1-8b-instruct-fast" },
+  { group: "Fast", label: "Llama 3.1 8B Instruct", value: "@cf/meta/llama-3.1-8b-instruct" },
+  { group: "Fast", label: "Llama 3.2 3B Instruct", value: "@cf/meta/llama-3.2-3b-instruct" },
+  { group: "Fast", label: "Llama 3.2 1B Instruct", value: "@cf/meta/llama-3.2-1b-instruct" },
+  // Capable
+  { group: "Capable", label: "Llama 3.3 70B (fp8-fast)", value: "@cf/meta/llama-3.3-70b-instruct-fp8-fast" },
+  { group: "Capable", label: "Llama 3.1 70B Instruct", value: "@cf/meta/llama-3.1-70b-instruct" },
+  { group: "Capable", label: "Llama 4 Scout 17B", value: "@cf/meta/llama-4-scout-17b-16e-instruct" },
+  { group: "Capable", label: "Mistral Small 3.1 24B", value: "@cf/mistral/mistral-small-3.1-24b-instruct" },
+  { group: "Capable", label: "Gemma 3 12B", value: "@cf/google/gemma-3-12b-it" },
+  { group: "Capable", label: "GPT-OSS 20B (OpenAI)", value: "@cf/openai/gpt-oss-20b" },
+  { group: "Capable", label: "GPT-OSS 120B (OpenAI)", value: "@cf/openai/gpt-oss-120b" },
+  { group: "Capable", label: "Kimi K2.5 (Moonshot AI)", value: "@cf/moonshotai/kimi-k2.5" },
+  // Reasoning
+  { group: "Reasoning", label: "DeepSeek R1 Distill Qwen 32B", value: "@cf/deepseek/deepseek-r1-distill-qwen-32b" },
+  { group: "Reasoning", label: "QwQ 32B (Qwen)", value: "@cf/qwen/qwq-32b" },
+  { group: "Reasoning", label: "Qwen 3 30B A3B (fp8)", value: "@cf/qwen/qwen3-30b-a3b-fp8" },
+];
+
+const CUSTOM_VALUE = "__custom__";
+
 export function PromptTester() {
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   const [prompt, setPrompt] = useState(DEFAULT_PICKER_PROMPT);
-  const [aiModel, setAiModel] = useState("@cf/meta/llama-3-8b-instruct");
+  const [aiModel, setAiModel] = useState("@cf/meta/llama-3.1-8b-instruct");
+  const [customModel, setCustomModel] = useState("");
+
+  const isCustom = aiModel === CUSTOM_VALUE;
+  const resolvedModel = isCustom ? customModel.trim() : aiModel;
 
   const { data: markets = [], isLoading: marketsLoading } = useQuery({
     queryKey: ["markets"],
@@ -65,7 +92,7 @@ export function PromptTester() {
       api.testPrompt({
         marketIds: Array.from(selectedIds),
         prompt,
-        aiModel: aiModel.trim() || undefined,
+        aiModel: resolvedModel || undefined,
       }),
   });
 
@@ -89,7 +116,7 @@ export function PromptTester() {
     setSelectedIds(new Set());
   }
 
-  const canRun = selectedIds.size > 0 && prompt.trim().length > 0 && !mutation.isPending;
+  const canRun = selectedIds.size > 0 && prompt.trim().length > 0 && resolvedModel.length > 0 && !mutation.isPending;
 
   return (
     <div className="p-6 max-w-5xl mx-auto space-y-8">
@@ -194,16 +221,42 @@ export function PromptTester() {
           Available placeholders: <code>{PLACEHOLDERS}</code>
         </p>
 
-        <div className="flex items-center gap-3">
-          <label className="text-sm text-muted-foreground shrink-0">
+        <div className="flex items-start gap-3 flex-wrap">
+          <label className="text-sm text-muted-foreground shrink-0 pt-1.5">
             AI Model:
           </label>
-          <input
-            type="text"
-            value={aiModel}
-            onChange={(e) => setAiModel(e.target.value)}
-            className="flex-1 text-sm rounded-md border bg-background px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-ring font-mono"
-          />
+          <div className="flex flex-col gap-2 flex-1 min-w-0">
+            <select
+              value={aiModel}
+              onChange={(e) => setAiModel(e.target.value)}
+              className="text-sm rounded-md border bg-background px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-ring w-full"
+            >
+              {["Fast", "Capable", "Reasoning"].map((group) => (
+                <optgroup key={group} label={group}>
+                  {CF_MODELS.filter((m) => m.group === group).map((m) => (
+                    <option key={m.value} value={m.value}>
+                      {m.label}
+                    </option>
+                  ))}
+                </optgroup>
+              ))}
+              <optgroup label="Other">
+                <option value={CUSTOM_VALUE}>Custom model ID…</option>
+              </optgroup>
+            </select>
+            {isCustom && (
+              <input
+                type="text"
+                value={customModel}
+                onChange={(e) => setCustomModel(e.target.value)}
+                placeholder="@cf/author/model-name"
+                className="text-sm rounded-md border bg-background px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-ring font-mono w-full"
+              />
+            )}
+            {!isCustom && (
+              <p className="text-xs text-muted-foreground font-mono">{aiModel}</p>
+            )}
+          </div>
         </div>
 
         <button
